@@ -1,0 +1,94 @@
+body {
+  position: relative;
+}
+
+input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly]{background-color:#eeeeee;border-color:#ddd; cursor: auto;}
+
+#qr {
+    width: 185px;
+    height: 185px;
+    display: inline-block;
+}
+
+#qr_addr {
+    position: relative;
+    z-index: 1;
+}
+
+legend {
+    margin-bottom: 0px;
+}
+
+.form-hide {
+    display: none;
+}
+
+#site {
+  padding-top: 70px;
+}
+
+/* Front page password form */
+
+#header {
+  background: #0F141C url('../images/header-bg.jpg') no-repeat;
+  padding-top: 70px;
+}
+
+.sales-title {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+.sales-subtitle {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: -10px;
+  color: #666;
+}
+
+#header h1 {
+  font-size: 2em;
+  text-align: center;
+  color: white;
+  text-shadow: -1px -1px 2px #000;
+}
+
+#header h2 {
+  font-size: 1.5em;
+  text-align: center;
+  color: white;
+  padding-bottom: 20px;
+  text-shadow: -1px -1px 2px #000;
+}
+
+#form-well {
+    width: 600px;
+    margin: 0 auto;
+    padding-bottom: 0px;
+}
+
+#form-well input {
+    margin-bottom: 0;
+}
+
+#form-well input[type='text'] {
+    width: 520px;
+}
+
+#form-well input[type='password'] {
+    width: 320px;
+}
+
+#form-well .btn-success {
+  width: 125px;
+}
+
+#open-sesame {
+  width: 80px;
+}
+
+/* Footer */
+footer p {
+    text-align: center;
+}
+
