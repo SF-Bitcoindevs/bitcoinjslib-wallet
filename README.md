@@ -1,9 +1,9 @@
-# A Deterministic Wallet fork of Carbonwallet with most updated bitcoinlib-js libraries
+# SF Bitcoin Devs are building a Deterministic Wallet for the world!
+This is a of Carbonwallet with most updated bitcoinlib-js libraries
 
-April 6, 2014
+# Latest Updates
+April 12, 2014
 
-1. Added minified bitcoinlib-js
+1. Larry pushed a number of changes to get running
 
-2. Removed old bitcoinlib files
-
-3. Break passphrase
+2. Working passphrase.
