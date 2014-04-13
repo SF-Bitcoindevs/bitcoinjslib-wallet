@@ -3,30 +3,33 @@
 */
 
 function electrum_extend_chain(pubKey, privKey, n, forChange, fromPrivKey) {
-    var curve = getSECCurveByName("secp256k1");
+    var curve = Bitcoin.getSECCurveByName("secp256k1");
     var mode = forChange ? 1 : 0;
     var mpk = pubKey.slice(1);
-    var bytes = Crypto.charenc.UTF8.stringToBytes(n + ':' + mode + ':').concat(mpk);
-    var sequence = Crypto.SHA256(Crypto.SHA256(bytes, {asBytes: true}), {asBytes: true})
+    var bytes = Bitcoin.convert.stringToBytes(n + ':' + mode + ':').concat(mpk);
+    var firsthash =  Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToString(bytes), {asBytes: true});
+    var sequence = Bitcoin.Crypto.SHA256(firsthash, {asBytes: true})
     var secexp = null;
-    var pt = ECPointFp.decodeFrom(curve.getCurve(), pubKey);
+    var pt = Bitcoin.ECPointFp.decodeFrom(curve.getCurve(), pubKey);
 
     if (fromPrivKey) {
-        var A = BigInteger.fromByteArrayUnsigned(sequence);
-        var B = BigInteger.fromByteArrayUnsigned(privKey);
+        var A = Bitcoin.BigInteger.fromByteArrayUnsigned(sequence);
+        var B = Bitcoin.BigInteger.fromByteArrayUnsigned(privKey);
         var C = curve.getN();
         secexp = A.add(B).mod(C);
         pt = pt.add(curve.getG().multiply(A));
     } else {
-        var A = BigInteger.fromByteArrayUnsigned(sequence);
+        var A = Bitcoin.BigInteger.fromByteArrayUnsigned(sequence);
         pt = pt.add(curve.getG().multiply(A));
     }
 
     var newPriv = secexp ? secexp.toByteArrayUnsigned(): [];
     for(;newPriv.length<32;) newPriv.unshift(0x00);
     var newPub = pt.getEncoded();
-    var h160 = Bitcoin.Util.sha256ripe160(newPub);
-    var addr = new Bitcoin.Address(h160);
+    // var h160 = Bitcoin.Util.sha256ripe160(newPub);
+    var s256 =  Bitcoin.Crypto.SHA256( Bitcoin.convert.bytesToString( newPub ) );
+    var h160 = Bitcoin.Crypto.RIPEMD160( s256 );
+    var addr = new Bitcoin.Address(h160.toString());
     var sec = secexp ? new Bitcoin.Address(newPriv) : '';
     if (secexp)
         sec.version = 128;
@@ -35,8 +38,8 @@ function electrum_extend_chain(pubKey, privKey, n, forChange, fromPrivKey) {
 }
 
 function electrum_get_pubkey(privKey) {
-    var curve = getSECCurveByName("secp256k1");
-    var secexp = BigInteger.fromByteArrayUnsigned(privKey);
+    var curve = Bitcoin.getSECCurveByName("secp256k1");
+    var secexp = Bitcoin.BigInteger.fromByteArrayUnsigned(privKey);
     var pt = curve.getG().multiply(secexp);
     var pubKey = pt.getEncoded();
     return pubKey;
@@ -61,7 +64,8 @@ var Electrum = new function () {
             var portion = seedRounds / 100;
             onUpdate(rounds * 100 / seedRounds, seed);
             for (var i = 0; i < portion; i++)
-                seed = Crypto.SHA256(seed.concat(oldseed), {asBytes: true});
+                // seed = Bitcoin.Crypto.SHA256(seed.concat(oldseed), {asBytes: true});
+                seed = Bitcoin.convert.wordArrayToBytes( Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToString(oldseed), {asBytes:true}) );
             rounds += portion;
             if (rounds < seedRounds) {
                 timeout = setTimeout(calcSeed, 0);
@@ -87,7 +91,7 @@ var Electrum = new function () {
     }
 
     this.init = function(_seed, update, success) {
-        seed = Crypto.charenc.UTF8.stringToBytes(_seed);
+        seed = Bitcoin.convert.stringToBytes(_seed);
         oldseed = seed.slice(0);
         rounds = 0;
         onUpdate = update;
