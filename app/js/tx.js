@@ -84,7 +84,7 @@ var TX = new function () {
                 if (!inputs[hash].hasOwnProperty(index))
                     continue;
                 var script = parseScript(inputs[hash][index].script);
-                var b64hash = Crypto.util.bytesToBase64(Crypto.util.hexToBytes(hash));
+                var b64hash = Bitcoin.convert.bytesToBase64(Bitcoin.convert.hexToBytes(hash));
                 var txin = new Bitcoin.TransactionIn({outpoint: {hash: b64hash, index: index}, script: script, sequence: 4294967295});
                 selectedOuts.push(txin);
                 sendTx.addInput(txin);
@@ -94,7 +94,7 @@ var TX = new function () {
         for (var i in outputs) {
             var address = outputs[i].address;
             var fval = outputs[i].value;
-            var value = new BigInteger('' + Math.round(fval * 1e8), 10);
+            var value = new Bitcoin.BigInteger('' + Math.round(fval * 1e8), 10);
             sendTx.addOutput(new Bitcoin.Address(address), value);
         }
 
@@ -117,10 +117,10 @@ var TX = new function () {
     this.toBBE = function(sendTx) {
         //serialize to Bitcoin Block Explorer format
         var buf = sendTx.serialize();
-        var hash = Crypto.SHA256(Crypto.SHA256(buf, {asBytes: true}), {asBytes: true});
+        var hash = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(buf, {asBytes: true}), {asBytes: true});
 
         var r = {};
-        r['hash'] = Crypto.util.bytesToHex(hash.reverse());
+        r['hash'] = Bitcoin.convert.bytesToHex(hash.reverse());
         r['ver'] = sendTx.version;
         r['vin_sz'] = sendTx.ins.length;
         r['vout_sz'] = sendTx.outs.length;
@@ -131,12 +131,12 @@ var TX = new function () {
 
         for (var i = 0; i < sendTx.ins.length; i++) {
             var txin = sendTx.ins[i];
-            var hash = Crypto.util.base64ToBytes(txin.outpoint.hash);
+            var hash = Bitcoin.convert.base64ToBytes(txin.outpoint.hash);
             var n = txin.outpoint.index;
-            var prev_out = {'hash': Crypto.util.bytesToHex(hash.reverse()), 'n': n};
+            var prev_out = {'hash': Bitcoin.convert.bytesToHex(hash.reverse()), 'n': n};
 
             if (n == 4294967295) {
-                var cb = Crypto.util.bytesToHex(txin.script.buffer);
+                var cb = Bitcoin.convert.bytesToHex(txin.script.buffer);
                 r['in'].push({'prev_out': prev_out, 'coinbase' : cb});
             } else {
                 var ss = dumpScript(txin.script);
@@ -166,7 +166,7 @@ function dumpScript(script) {
         var chunk = script.chunks[i];
         var op = new Bitcoin.Opcode(chunk);
         typeof chunk == 'number' ?  out.push(op.toString()) :
-            out.push(Crypto.util.bytesToHex(chunk));
+            out.push(Bitcoin.convert.bytesToHex(chunk));
     }
     return out.join(' ');
 }
@@ -182,15 +182,15 @@ function tx_parseBCI(data, address) {
 
     delete unspenttxs;
     var unspenttxs = {};
-    var balance = BigInteger.ZERO;
+    var balance = Bitcoin.BigInteger.ZERO;
     for (var i in txs) {
         var o = txs[i];
         var lilendHash = o.tx_hash;
 
         //convert script back to BBE-compatible text
-        var script = dumpScript( new Bitcoin.Script(Crypto.util.hexToBytes(o.script)) );
+        var script = dumpScript( new Bitcoin.Script(Bitcoin.convert.hexToBytes(o.script)) );
 
-        var value = new BigInteger('' + o.value, 10);
+        var value = new Bitcoin.BigInteger('' + o.value, 10);
         if (!(lilendHash in unspenttxs))
             unspenttxs[lilendHash] = {};
         unspenttxs[lilendHash][o.tx_output_n] = {amount: value, script: script};
@@ -214,16 +214,16 @@ function endian(string) {
 
 function btcstr2bignum(btc) {
     var i = btc.indexOf('.');
-    var value = new BigInteger(btc.replace(/\./,''));
+    var value = new Bitcoin.BigInteger(btc.replace(/\./,''));
     var diff = 9 - (btc.length - i);
     if (i == -1) {
         var mul = "100000000";
     } else if (diff < 0) {
-        return value.divide(new BigInteger(Math.pow(10,-1*diff).toString()));
+        return value.divide(new Bitcoin.BigInteger(Math.pow(10,-1*diff).toString()));
     } else {
         var mul = Math.pow(10,diff).toString();
     }
-    return value.multiply(new BigInteger(mul));
+    return value.multiply(new Bitcoin.BigInteger(mul));
 }
 
 function parseScript(script) {
@@ -233,7 +233,7 @@ function parseScript(script) {
         if (Bitcoin.Opcode.map.hasOwnProperty(s[i])){
             newScript.writeOp(Bitcoin.Opcode.map[s[i]]);
         } else {
-            newScript.writeBytes(Crypto.util.hexToBytes(s[i]));
+            newScript.writeBytes(Bitcoin.convert.hexToBytes(s[i]));
         }
     }
     return newScript;

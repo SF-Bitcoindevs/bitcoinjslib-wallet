@@ -173,7 +173,7 @@ $(document).ready(function() {
       
     var pk = new Array(32);
     rng_get_bytes(pk);
-    var seed = Crypto.util.bytesToHex(pk.slice(0,16));
+    var seed = Bitcoin.convert.bytesToHex(pk.slice(0,16));
     //nb! electrum doesn't handle trailing zeros very well
     // and we want to stay compatible.
     if (seed.charAt(0) == '0') seed = seed.substr(1);
@@ -378,7 +378,7 @@ $(document).ready(function() {
           var sendTx = TX.construct();
           var txJSON = TX.toBBE(sendTx);
           var buf = sendTx.serialize();
-          var txHex = Crypto.util.bytesToHex(buf);
+          var txHex = Bitcoin.convert.bytesToHex(buf);
           $('#txJSON').val(txJSON);
           $('#txHex').val(txHex);
       } catch(err) {
@@ -401,7 +401,7 @@ $(document).ready(function() {
       var bytes = Bitcoin.Base58.decode(address);
       var end = bytes.length - 4;
       var hash = bytes.slice(0, end);
-      var checksum = Crypto.SHA256(Crypto.SHA256(hash, {asBytes: true}), {asBytes: true});
+      var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(hash, {asBytes: true}), {asBytes: true});
       if (checksum[0] != bytes[end] ||
           checksum[1] != bytes[end+1] ||
           checksum[2] != bytes[end+2] ||
