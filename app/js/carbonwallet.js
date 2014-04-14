@@ -6,8 +6,8 @@ $(document).ready(function() {
   $('#site').hide();
   $('#tx').hide();
   $('#logout-menu').hide();
-  
-  // Add instawallet style URLS. Only we use a hash 
+
+  // Add instawallet style URLS. Only we use a hash
   // and therefore the URL is not sent to the server.
   // See http://en.wikipedia.org/wiki/Fragment_identifier
   var hash = $(location).attr('href').split('#')[1];
@@ -16,24 +16,24 @@ $(document).ready(function() {
     $('#password').val(hash.replace(/-/g, ' '));
     checkValidPassword();
   }
-  
+
   $('#open-sesame').click(function(){
-  
+
     var seed = $('#password').val();
     seed = mn_decode(seed);
     Electrum.init(seed, function(r) {
         if(r % 20 == 0)
-          $('#seed-progress').css('width', (r + 19) + '%'); 
-      }, 
+          $('#seed-progress').css('width', (r + 19) + '%');
+      },
       function(privKey) {
-        Electrum.gen(10, function(r) { 
-          WALLET.getKeys().push(new Bitcoin.ECKey(r[1])); 
+        Electrum.gen(10, function(r) {
+          WALLET.getKeys().push(new Bitcoin.ECKey(r[1]));
           if(WALLET.getKeys().length == 10)
-            login_success(); 
+            login_success();
         });
       }
     );
-        
+
     return true;
   })
 
@@ -44,7 +44,7 @@ $(document).ready(function() {
   $('#txDest').change(txOnChangeDest);
   $('#txDest').keypress(verifySoon);
   $('#txValue').keypress(verifySoon);
-  
+
   $('#password').keyup(checkValidPassword);
 
   $('#txAddDest').click(txOnAddDest);
@@ -54,7 +54,7 @@ $(document).ready(function() {
   $('#generate-password').click(generatePassword);
   $('#regenerate-password').click(regeneratePassword);
   $('#regenerate-password').tooltip();
-        
+
   $('#your-addresses-nav, #home').click(function(){
     hideAll();
     $('#your-addresses').show();
@@ -84,46 +84,46 @@ $(document).ready(function() {
     $('#alertModalText').text(text || 'Nevermind');
     $('#alertModal').modal();
   }
-  
+
   function verifySoon() {
-    if(timeout) 
+    if(timeout)
     {
         clearTimeout(timeout);
         timeout = null;
     }
     timeout = setTimeout(txOnChangeDest, 1000);
   }
-  
+
   function hideAll()
   {
     $('ul.nav-list li').removeClass('active');
     $('#your-addresses').hide();
     $('#tx').hide();
   }
-  
-  function login_success() 
+
+  function login_success()
   {
     $('#logon').hide();
     $('#site').show();
     $('#logout-menu').show();
-    
+
     WALLET.updateAllBalances();
     $("#txDropAddr").find("option").remove();
-    
+
     for(i = 0; i < WALLET.getKeys().length; i++)
     {
-      var addr = WALLET.getKeys()[i].getBitcoinAddress().toString();
-      $('#address' + i).text(addr); 
-      $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>'); 
+      var addr = WALLET.getKeys()[i].getAddress().toString();
+      $('#address' + i).text(addr);
+      $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>');
       var qrcode = makeQRCode(addr);
       $('#qrcode' + i).popover({ title: 'QRCode', html: true, content: qrcode, placement: 'bottom' });
     }
-    
+
     txOnChangeSource();
-    
+
     return false;
   }
-  
+
   function makeQRCode(addr) {
     var qr = qrcode(3, 'M');
     addr = addr.replace(/^[\s\u3000]+|[\s\u3000]+$/g, '');
@@ -131,12 +131,12 @@ $(document).ready(function() {
     qr.make();
     return qr.createImgTag(4);
   }
-  
+
   function checkValidPassword(){
     var password = $('#password').val()
     var valid = true;
-    
-    if(password.split(' ').length != 12) 
+
+    if(password.split(' ').length != 12)
       valid = false;
 
     //make sure each word is a valid one from elctrum poetry list (mn_words variable)
@@ -157,20 +157,20 @@ $(document).ready(function() {
       $('#open-sesame').attr('disabled', 'disabled');
     }
   }
-  
+
   // -- WALLET Creation --
   function regeneratePassword() {
     $('#generated').val('');
     return generatePassword();
   }
-  
+
   function generatePassword() {
-  
+
     $('#generated').focus();
-    
+
     if($('#generated').val() != '')
       return true;
-      
+
     var pk = new Array(32);
     rng_get_bytes(pk);
     var seed = Bitcoin.convert.bytesToHex(pk.slice(0,16));
@@ -179,10 +179,10 @@ $(document).ready(function() {
     if (seed.charAt(0) == '0') seed = seed.substr(1);
     var codes = mn_encode(seed);
     $('#generated').val(codes);
-    
+
     return true;
   }
-  
+
   // -- transactions --
 
   function txOnChangeSource() {
@@ -218,25 +218,25 @@ $(document).ready(function() {
   }
 
   function txDropGetUnspent() {
-      var addr = WALLET.getKeys()[$('#txDropAddr').val()].getBitcoinAddress().toString();
+      var addr = WALLET.getKeys()[$('#txDropAddr').val()].getAddress().toString();
 
       $('#txUnspent').val('');
       BLOCKCHAIN.getUnspentOutputs(addr, txParseUnspent);
   }
 
   function txOnChangeDest() {
-  
+
     var res = txGetOutputs();
     var valid = true;
-    
+
     for( i in res)
     {
       if(res[i].dest == '' || res[i].fval == 0)
       {
         valid = false;
         break;
-      }  
-      else 
+      }
+      else
       {
         try {
           parseBase58Check(res[i].dest);
@@ -247,7 +247,7 @@ $(document).ready(function() {
         }
       }
     }
-    
+
     if(valid)
       $('#txSend').removeAttr('disabled');
     else
@@ -280,17 +280,17 @@ $(document).ready(function() {
 
   function txSent(text) {
       alertModal(text ? text : 'No response!');
-      
+
       WALLET.updateAllBalances();
   }
-  
+
   function txVerify() {
     txRebuild();
-  
+
     $('#verifySource').text(TX.getAddress());
     $('#verifyAmountTitle').text(TX.getSendBalance());
     $('#verifyTotal').text(TX.getSendBalance());
-    
+
     $('#verifyTable').find("tr:gt(0)").remove();
     for(i = 0; i < TX.getOutputs().length; i++)
     {
@@ -305,10 +305,10 @@ $(document).ready(function() {
       }
     }
     $('#verifyChange').remove();
-    $('#tx-toggle').prepend('<p id="verifyChange"><span>' 
+    $('#tx-toggle').prepend('<p id="verifyChange"><span>'
         + TX.getChange()
         + '</span> BTC will be returned to the sending address as change</p>');
-  
+
     $('#verifyModal').modal();
   }
 
@@ -321,22 +321,22 @@ $(document).ready(function() {
           r += 'Warning! Source address does not match private key.\n\n';
 
       var tx = $('#txHex').val();
-      
+
       BLOCKCHAIN.sendTX(tx, txSent);
       return true;
   }
-  
+
 
   function txRebuild() {
       var sec = $('#txSec').val();
       var addr = $('#txDropAddr option:selected').text();
       var unspent = $('#txUnspent').val();
       var balance = parseFloat($('#txBalance').val());
-      
+
       var fee = parseFloat('0.0001');
 
       try {
-          var res = parseBase58Check(sec); 
+          var res = parseBase58Check(sec);
           var version = res[0];
           var payload = res[1];
       } catch (err) {
@@ -363,7 +363,7 @@ $(document).ready(function() {
           TX.addOutput(o[i].dest, o[i].fval);
           fval += o[i].fval;
       }
-      
+
       // Add on the 0.0004 CarbonWallet fee.
       TX.addOutput('1carbQXAt6aUcePdFcfS3Z8JNwMCMDb4V', parseFloat('0.0004'));
       fval += parseFloat('0.0004');

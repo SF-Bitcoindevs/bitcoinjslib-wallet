@@ -39,7 +39,7 @@ var TX = new function () {
       for (var i in outputs) {
           if(outputs[i].address == this.getAddress())
             continue;
-            
+
           var fval = outputs[i].value;
           value += fval;
       }
@@ -52,7 +52,7 @@ var TX = new function () {
       for (var i in outputs) {
           if(outputs[i].address != this.getAddress())
             continue;
-            
+
           var fval = outputs[i].value;
           value += fval;
       }
@@ -60,7 +60,7 @@ var TX = new function () {
     }
 
     this.getAddress = function() {
-        return eckey.getBitcoinAddress().toString();
+        return eckey.getAddress().toString();
     }
 
     this.parseInputs = function(text, address) {
@@ -113,7 +113,7 @@ var TX = new function () {
         }
         return sendTx;
     };
-    
+
     this.toBBE = function(sendTx) {
         //serialize to Bitcoin Block Explorer format
         var buf = sendTx.serialize();

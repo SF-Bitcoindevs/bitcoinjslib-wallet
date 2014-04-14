@@ -1,9 +1,9 @@
 // Here we hold all the interactions with the blockchain.
 var BLOCKCHAIN = new function () {
-  
+
   this.retrieveAllBalances = function(addresses, callback) {
     var url = 'https://mainnet.helloblock.io/v1/addresses?';
-		
+
     var addrs = []
     for(i = 0; i < addresses.length; i++) {
 			addrs.push('addresses=' + addresses[i])
@@ -21,7 +21,7 @@ var BLOCKCHAIN = new function () {
           }}
           )
   }
-  
+
   this.getUnspentOutputs = function(address, callback) {
       var url = 'https://mainnet.helloblock.io/v1/addresses/' + address;
       $.ajax({
@@ -35,7 +35,7 @@ var BLOCKCHAIN = new function () {
         }}
       )
   }
-  
+
   this.sendTX = function(tx, callback) {
       // url = 'http://blockchain.info/pushtx';
       // postdata = 'tx=' + tx;
