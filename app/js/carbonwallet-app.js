@@ -235,14 +235,17 @@ $(document).ready(function() {
 
   function txOnChangeSource() {
     var i = $('#txDropAddr option:selected').prop('index');
-    // $('#txSec').val(WALLET.getKeys()[i].getExportedPrivateKey());
-    $('#txSec').val(WALLET.getKeys()[i].toString()); // presuably this is the private key
+    $('#txSec').val(WALLET.getKeys()[i].priv.toRadix(16));
     txDropGetUnspent();
   }
 
   function txSetUnspent(text) {
       if(text == '' || !text)
         return;
+      var fval = parseInt(text)/100000000.0;//TODO: remove hack, use a format util
+      $('#txBalance').val(fval);
+      return;
+
       var r = JSON.parse(text);
       txUnspent = JSON.stringify(r, null, 4);
       $('#txUnspent').val(txUnspent);
@@ -450,7 +453,7 @@ $(document).ready(function() {
       var bytes = Bitcoin.Base58.decode(address);
       var end = bytes.length - 4;
       var hash = bytes.slice(0, end);
-      var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(hash, {asBytes: true}), {asBytes: true});
+      var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(hash), {asBytes: true}), {asBytes: true});
       if (checksum[0] != bytes[end] ||
           checksum[1] != bytes[end+1] ||
           checksum[2] != bytes[end+2] ||

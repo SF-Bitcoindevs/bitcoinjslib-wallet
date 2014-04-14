@@ -15,7 +15,10 @@ var WALLET = new function ()
 
     balance = 0
 		for(i = 0; i < 10; i++) {
-      balance = balance + parseFloat($('#balance' + i).text());
+      _b = parseFloat($('#balance' + i).text());
+      if (!isNaN(_b)) {
+        balance = balance + _b;
+      }
     }
     return balance;
   }
