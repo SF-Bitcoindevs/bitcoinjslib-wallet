@@ -60,7 +60,7 @@ var TX = new function () {
     }
 
     this.getAddress = function() {
-        return eckey.getBitcoinAddress().toString();
+        return eckey.getAddress().toString();
     }
 
     this.parseInputs = function(text, address) {

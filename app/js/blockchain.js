@@ -27,7 +27,7 @@ var BLOCKCHAIN = new function () {
       $.ajax({
         url: url,
         success: function(res) {
-            callback(res.data.unspents)
+            callback(res.data.address.balance.toString());
         },
         error:function (xhr, opt, err) {
             if (onError)

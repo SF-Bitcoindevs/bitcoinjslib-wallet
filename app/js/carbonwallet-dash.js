@@ -37,7 +37,7 @@ $(document).ready(function() {
     
     for(i = 0; i < WALLET.getKeys().length; i++)
     {
-      var addr = WALLET.getKeys()[i].getBitcoinAddress().toString();
+      var addr = WALLET.getKeys()[i].getAddress().toString();
       $('#address' + i).text(addr); 
       $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>'); 
     }
