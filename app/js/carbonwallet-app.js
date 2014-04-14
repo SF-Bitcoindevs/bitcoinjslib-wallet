@@ -453,7 +453,7 @@ $(document).ready(function() {
       var bytes = Bitcoin.Base58.decode(address);
       var end = bytes.length - 4;
       var hash = bytes.slice(0, end);
-      var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(hash, {asBytes: true}), {asBytes: true});
+      var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(hash), {asBytes: true}), {asBytes: true});
       if (checksum[0] != bytes[end] ||
           checksum[1] != bytes[end+1] ||
           checksum[2] != bytes[end+2] ||
