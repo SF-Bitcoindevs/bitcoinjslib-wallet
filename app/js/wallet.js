@@ -15,7 +15,10 @@ var WALLET = new function ()
 
     balance = 0
 		for(i = 0; i < 10; i++) {
-      balance = balance + parseFloat($('#balance' + i).text()); 
+      _b = parseFloat($('#balance' + i).text());
+      if (!isNaN(_b)) {
+        balance = balance + _b;
+      }
     }
     return balance;
   }
@@ -30,7 +33,7 @@ var WALLET = new function ()
     
     for(i = 0; i < this.getKeys().length; i++)
     {
-      addresses[i] = this.getKeys()[i].getBitcoinAddress().toString();
+      addresses[i] = this.getKeys()[i].getAddress().toString();
     }
 		
     BLOCKCHAIN.retrieveAllBalances(addresses, function(addresses) {

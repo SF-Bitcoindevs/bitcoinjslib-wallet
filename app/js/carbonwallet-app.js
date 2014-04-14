@@ -156,7 +156,7 @@ $(document).ready(function() {
     
     for(i = 0; i < WALLET.getKeys().length; i++)
     {
-      var addr = WALLET.getKeys()[i].getBitcoinAddress().toString();
+      var addr = WALLET.getKeys()[i].getAddress().toString();
       $('#address' + i).text(addr); 
       $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>'); 
       var qrcode = makeQRCode(addr);
@@ -235,13 +235,17 @@ $(document).ready(function() {
 
   function txOnChangeSource() {
     var i = $('#txDropAddr option:selected').prop('index');
-    $('#txSec').val(WALLET.getKeys()[i].getExportedPrivateKey());
+    $('#txSec').val(WALLET.getKeys()[i].priv.toRadix(16));
     txDropGetUnspent();
   }
 
   function txSetUnspent(text) {
       if(text == '')
         return;
+      var fval = parseInt(text)/100000000.0;//TODO: remove hack, use a format util
+      $('#txBalance').val(fval);
+      return;
+
       var r = JSON.parse(text);
       txUnspent = JSON.stringify(r, null, 4);
       $('#txUnspent').val(txUnspent);
@@ -266,7 +270,7 @@ $(document).ready(function() {
   }
 
   function txDropGetUnspent() {
-      var addr = WALLET.getKeys()[$('#txDropAddr').val()].getBitcoinAddress().toString();
+      var addr = WALLET.getKeys()[$('#txDropAddr').val()].getAddress().toString();
 
       $('#txUnspent').val('');
       BLOCKCHAIN.getUnspentOutputs(addr, txParseUnspent);
