@@ -117,7 +117,7 @@ var TX = new function () {
     this.toBBE = function(sendTx) {
         //serialize to Bitcoin Block Explorer format
         var buf = sendTx.serialize();
-        var hash = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(buf, {asBytes: true}), {asBytes: true});
+        var hash = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(buf), {asBytes: true}), {asBytes: true});
 
         var r = {};
         r['hash'] = Bitcoin.convert.bytesToHex(hash.reverse());
