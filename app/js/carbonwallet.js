@@ -171,8 +171,7 @@ $(document).ready(function() {
     if($('#generated').val() != '')
       return true;
 
-    var pk = new Array(32);
-    rng_get_bytes(pk);
+    var pk = secureRandom(32, {array:true});
     var seed = Bitcoin.convert.bytesToHex(pk.slice(0,16));
     //nb! electrum doesn't handle trailing zeros very well
     // and we want to stay compatible.
