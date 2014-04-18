@@ -65,7 +65,7 @@ var TX = new function () {
 
     this.parseInputs = function(text, address) {
         try {
-            var res = tx_parseBCI(text, address);
+            var res = txParseHelloBlockUnspents(text, address);
         } catch(err) {
             var res = { "balance":"0" };
         }
@@ -171,29 +171,31 @@ function dumpScript(script) {
     return out.join(' ');
 }
 
-// blockchain.info parser (adapted)
-// uses http://blockchain.info/unspent?address=<address>
-function tx_parseBCI(data, address) {
-    var r = JSON.parse(data);
-    var txs = r.unspent_outputs;
+// helloblock parser
+// https://mainnet.helloblock.io/v1/addresses/<address>/unspents?limit=10
+function txParseHelloBlockUnspents(data, address) {
+    // var r = JSON.parse(data);
+    // var txs = r.unspent_outputs;
+    var txs = JSON.parse(data);
 
     if (!txs)
-        throw 'Not a BCI format';
+        throw 'Not a helloblock format';
 
     delete unspenttxs;
     var unspenttxs = {};
     var balance = Bitcoin.BigInteger.ZERO;
+
     for (var i in txs) {
         var o = txs[i];
-        var lilendHash = o.tx_hash;
+        var lilendHash = o.txHash;
 
         //convert script back to BBE-compatible text
-        var script = dumpScript( new Bitcoin.Script(Bitcoin.convert.hexToBytes(o.script)) );
+        var script = dumpScript( new Bitcoin.Script(Bitcoin.convert.hexToBytes(o.scriptPubKey)) );
 
         var value = new Bitcoin.BigInteger('' + o.value, 10);
         if (!(lilendHash in unspenttxs))
             unspenttxs[lilendHash] = {};
-        unspenttxs[lilendHash][o.tx_output_n] = {amount: value, script: script};
+        unspenttxs[lilendHash][o.index] = {amount: value, script: script};
         balance = balance.add(value);
     }
     return {balance:balance, unspenttxs:unspenttxs};

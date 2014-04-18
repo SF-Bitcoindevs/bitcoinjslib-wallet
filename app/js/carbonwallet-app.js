@@ -234,15 +234,8 @@ $(document).ready(function() {
     txDropGetUnspent();
   }
 
-  function txSetUnspent(text) {
-      if(text == '' || !text)
-        return;
-      var fval = parseInt(text)/100000000.0;//TODO: remove hack, use a format util
-      $('#txBalance').val(fval);
-      return;
-
-      var r = JSON.parse(text);
-      txUnspent = JSON.stringify(r, null, 4);
+  function txSetUnspent(unspents) {
+      txUnspent = JSON.stringify(unspents, null, 4);
       $('#txUnspent').val(txUnspent);
       var address = $('#txAddr').val();
       TX.parseInputs(txUnspent, address);
@@ -255,20 +248,21 @@ $(document).ready(function() {
   }
 
   function txUpdateUnspent() {
-      txSetUnspent($('#txUnspent').val());
+      txParseUnspent($('#txUnspent').val());
   }
 
   function txParseUnspent(text) {
       if (text == '')
           return;
-      txSetUnspent(text);
+      var r = JSON.parse(text);
+      txSetUnspent(r);
   }
 
   function txDropGetUnspent() {
       var addr = WALLET.getKeys()[$('#txDropAddr').val()].getAddress().toString();
 
       $('#txUnspent').val('');
-      BLOCKCHAIN.getUnspentOutputs(addr, txParseUnspent);
+      helloblock.getUnspentOutputs(addr, txSetUnspent);
   }
 
   function txOnChangeDest() {
@@ -369,7 +363,7 @@ $(document).ready(function() {
 
       var tx = $('#txHex').val();
 
-      BLOCKCHAIN.sendTX(tx, txSent);
+      helloblock.sendTX(tx, txSent);
       return true;
   }
 
