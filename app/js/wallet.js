@@ -37,7 +37,7 @@ var WALLET = new function ()
       addresses[i] = this.getKeys()[i].getAddress().toString();
     }
 
-    BLOCKCHAIN.retrieveAllBalances(addresses, function(addresses) {
+    helloblock.retrieveAllBalances(addresses, function(addresses) {
 			for(i = 0; i < addresses.length; i++) {
         var addr = addresses[i];
 				var bal = addr.balance;
