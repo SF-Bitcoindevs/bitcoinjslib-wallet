@@ -156,7 +156,7 @@ $(document).ready(function() {
 
     for(i = 0; i < WALLET.getKeys().length; i++)
     {
-      var addr = WALLET.getKeys()[i].getAddress().toString();
+      var addr = WALLET.getKeys()[i].getAddress(NETWORK_VERSION).toString();
       $('#address' + i).text(addr);
       $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>');
       var qrcode = makeQRCode(addr);
@@ -230,7 +230,7 @@ $(document).ready(function() {
 
   function txOnChangeSource() {
     var i = $('#txDropAddr option:selected').prop('index');
-    $('#txSec').val(WALLET.getKeys()[i].priv.toRadix(16));
+    $('#txSec').val( Bitcoin.base58check.encode( WALLET.getKeys()[i].priv.toByteArray(), 'p') );
     txDropGetUnspent();
   }
 
@@ -259,7 +259,7 @@ $(document).ready(function() {
   }
 
   function txDropGetUnspent() {
-      var addr = WALLET.getKeys()[$('#txDropAddr').val()].getAddress().toString();
+      var addr = WALLET.getKeys()[$('#txDropAddr').val()].getAddress(NETWORK_VERSION).toString();
 
       $('#txUnspent').val('');
       helloblock.getUnspentOutputs(addr, txSetUnspent);
@@ -280,7 +280,7 @@ $(document).ready(function() {
       else
       {
         try {
-          parseBase58Check(res[i].dest);
+          Bitcoin.base58check.decode(res[i].dest);
         }
         catch (e) {
           valid = false;
@@ -335,8 +335,8 @@ $(document).ready(function() {
     $('#verifyTable').find("tr:gt(0)").remove();
     for(i = 0; i < TX.getOutputs().length; i++)
     {
-      if(TX.getOutputs()[i].address != TX.getAddress()
-        && TX.getOutputs()[i].address != '1carbQXAt6aUcePdFcfS3Z8JNwMCMDb4V')
+      if(TX.getOutputs()[i].address != TX.getAddress())
+        // && TX.getOutputs()[i].address != '1carbQXAt6aUcePdFcfS3Z8JNwMCMDb4V')
       {
         $('#verifyTable').append('<tr><td><span class="label label-info">'
           + TX.getOutputs()[i].address
@@ -377,9 +377,9 @@ $(document).ready(function() {
       var fee = parseFloat('0.0001');
 
       try {
-          var res = parseBase58Check(sec);
-          var version = res[0];
-          var payload = res[1];
+          var res = Bitcoin.base58check.decode(sec);
+          var version = res.version;
+          var payload = res.payload;
       } catch (err) {
           $('#txJSON').val('');
           $('#txHex').val('');
@@ -392,9 +392,9 @@ $(document).ready(function() {
           compressed = true;
       }
 
-      var eckey = new Bitcoin.ECKey(payload);
+      var eckey = new Bitcoin.ECKey( Bitcoin.convert.bytesToHex(payload) );
 
-      eckey.setCompressed(compressed);
+      eckey.compressed = compressed;
 
       TX.init(eckey);
 
@@ -406,8 +406,8 @@ $(document).ready(function() {
       }
 
       // Add on the 0.0004 CarbonWallet fee.
-      TX.addOutput('1carbQXAt6aUcePdFcfS3Z8JNwMCMDb4V', parseFloat('0.0004'));
-      fval += parseFloat('0.0004');
+      // TX.addOutput('1carbQXAt6aUcePdFcfS3Z8JNwMCMDb4V', parseFloat('0.0004'));
+      // fval += parseFloat('0.0004');
 
       // send change back or it will be sent as fee
       if (balance > fval + fee) {
@@ -439,7 +439,7 @@ $(document).ready(function() {
   }
 
   function parseBase58Check(address) {
-      var bytes = Bitcoin.Base58.decode(address);
+      var bytes = Bitcoin.base58check.decode(address);
       var end = bytes.length - 4;
       var hash = bytes.slice(0, end);
       var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(hash), {asBytes: true}), {asBytes: true});

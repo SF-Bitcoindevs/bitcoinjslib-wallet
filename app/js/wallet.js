@@ -34,7 +34,7 @@ var WALLET = new function ()
 
     for(i = 0; i < this.getKeys().length; i++)
     {
-      addresses[i] = this.getKeys()[i].getAddress().toString();
+      addresses[i] = this.getKeys()[i].getAddress(NETWORK_VERSION).toString();
     }
 
     helloblock.retrieveAllBalances(addresses, function(addresses) {
