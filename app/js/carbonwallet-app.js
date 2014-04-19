@@ -230,7 +230,7 @@ $(document).ready(function() {
 
   function txOnChangeSource() {
     var i = $('#txDropAddr option:selected').prop('index');
-    $('#txSec').val( Bitcoin.base58check.encode( WALLET.getKeys()[i].priv.toByteArray(), 'p') );
+    $('#txSec').val( Bitcoin.base58check.encode( WALLET.getKeys()[i].priv.toByteArrayUnsigned(), NETWORK_VERSION) );
     txDropGetUnspent();
   }
 
@@ -374,7 +374,7 @@ $(document).ready(function() {
       var unspent = $('#txUnspent').val();
       var balance = parseFloat($('#txBalance').val());
 
-      var fee = parseFloat('0.0003');
+      var fee = parseFloat('0.0001');
 
       try {
           var res = Bitcoin.base58check.decode(sec);
@@ -388,7 +388,7 @@ $(document).ready(function() {
 
       var compressed = false;
       if (payload.length > 32) {
-          payload.pop();
+          payload = payload.slice(0,32); //payload.pop();
           compressed = true;
       }
 
@@ -404,10 +404,6 @@ $(document).ready(function() {
           TX.addOutput(o[i].dest, o[i].fval);
           fval += o[i].fval;
       }
-
-      // Add on the 0.0004 CarbonWallet fee.
-      // TX.addOutput('1carbQXAt6aUcePdFcfS3Z8JNwMCMDb4V', parseFloat('0.0004'));
-      // fval += parseFloat('0.0004');
 
       // send change back or it will be sent as fee
       if (balance > fval + fee) {
@@ -436,19 +432,5 @@ $(document).ready(function() {
           res.push( {"dest":dest, "fval":fval } );
       });
       return res;
-  }
-
-  function parseBase58Check(address) {
-      var bytes = Bitcoin.base58check.decode(address);
-      var end = bytes.length - 4;
-      var hash = bytes.slice(0, end);
-      var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(hash), {asBytes: true}), {asBytes: true});
-      if (checksum[0] != bytes[end] ||
-          checksum[1] != bytes[end+1] ||
-          checksum[2] != bytes[end+2] ||
-          checksum[3] != bytes[end+3])
-              throw new Error("Wrong checksum");
-      var version = hash.shift();
-      return [version, hash];
   }
 });

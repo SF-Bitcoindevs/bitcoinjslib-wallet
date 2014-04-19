@@ -37,20 +37,18 @@ var helloblock = new function () {
   }
 
   this.sendTX = function(tx, callback) {
-      // url = 'http://blockchain.info/pushtx';
-      // postdata = 'tx=' + tx;
-      // if (url != null && url != "") {
-      //     this.tx_fetch(url, callback, callback, postdata);
-      // }
       var url = HELLOBLOCK_URL + '/v1/transactions'
       $.ajax({
         type: 'post',
         url: url,
         data: {rawTxHex: tx},
         success: function(res) {
-          console.log( 'Tried to send tx');
-          console.log( res );
-          if (callback) callback(res);
+          var msg = 'Transaction complete!\n';
+          console.log( msg, res );
+          if (callback) {
+            var detail =  'txHash: ' + res.data.transaction.txHash;
+            callback( msg + detail );
+          }
         }, 
         error: function(xhr, opt, err) {
           alert("Failed! ", err )

@@ -30,7 +30,6 @@ var WALLET = new function ()
   this.updateAllBalances = function() {
 
     var addresses = [];
-    console.log(this.getKeys());
 
     for(i = 0; i < this.getKeys().length; i++)
     {
@@ -40,7 +39,7 @@ var WALLET = new function ()
     helloblock.retrieveAllBalances(addresses, function(addresses) {
 			for(i = 0; i < addresses.length; i++) {
         var addr = addresses[i];
-				var bal = addr.balance;
+				var bal = addr.balance / 100000000.0;
         $('#balance' + i).text(bal);
 			}
     });
