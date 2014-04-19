@@ -42,8 +42,19 @@ var helloblock = new function () {
       // if (url != null && url != "") {
       //     this.tx_fetch(url, callback, callback, postdata);
       // }
-      console.log( 'Tried to send tx');
-      console.log( tx );
-      callback()
+      var url = HELLOBLOCK_URL + '/v1/transactions'
+      $.ajax({
+        type: 'post',
+        url: url,
+        data: {rawTxHex: tx},
+        success: function(res) {
+          console.log( 'Tried to send tx');
+          console.log( res );
+          if (callback) callback(res);
+        }, 
+        error: function(xhr, opt, err) {
+          alert("Failed! ", err )
+        }
+      });
   }
 }

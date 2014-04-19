@@ -374,7 +374,7 @@ $(document).ready(function() {
       var unspent = $('#txUnspent').val();
       var balance = parseFloat($('#txBalance').val());
 
-      var fee = parseFloat('0.0001');
+      var fee = parseFloat('0.0003');
 
       try {
           var res = Bitcoin.base58check.decode(sec);
