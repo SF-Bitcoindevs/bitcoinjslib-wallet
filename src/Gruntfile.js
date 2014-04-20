@@ -61,8 +61,12 @@ module.exports = function(grunt) {
             separator: ';',
         },
         dist: {
-            src: ['js/util.js', 'js/tx.js', 'js/helloblock.js', 'js/wallet.js', 'js/carbonwallet-app.js', 'js/carbonwallet-dash.js'],
-            dest: 'js/app.js',
+            src: ['js/src-js/util.js', 'js/src-js/tx.js', 'js/src-js/helloblock.js', 'js/src-js/wallet.js', 'js/src-js/carbonwallet-app.js', 'js/src-js/carbonwallet-dash.js'],
+            dest: 'js/app.js'
+        },
+        dev: {
+            src: ['js/src-js/util.js', 'js/src-js/tx.js', 'js/src-js/helloblock.js', 'js/src-js/wallet.js', 'js/src-js/carbonwallet-app.js', 'js/src-js/carbonwallet-dash.js'],
+            dest: 'app/js/app.min.js' // This is not minified, but is only used for development purposes - saves uglifiying for every change
         },
     },
     uglify: {
@@ -72,9 +76,9 @@ module.exports = function(grunt) {
           return filePath + '.map';
         }
       },
-      layouts: {
+      carbonFiles: {
         files: {
-          'app/js/app.min.js': [
+          'app/js/ext.min.js': [
             'vendorjs/bitcoinjs-lib.js',
             'vendorjs/secure-random/secure-random.js',
 
@@ -84,8 +88,9 @@ module.exports = function(grunt) {
             'extjs/qrcode.js',
             'extjs/mnemonic.js',
             'extjs/electrum.js',
-            'vendorjs/gibberish-aes/gibberish-aes.js',
-
+            'vendorjs/gibberish-aes/gibberish-aes.js'
+          ],
+          'app/js/app.min.js': [
             'js/app.js'
           ]
         }
@@ -102,6 +107,51 @@ module.exports = function(grunt) {
                 "app/app.html": ["jade/app.jade"]
             }
         }
+    },
+    watch: {
+      bitcoinlibJS: {
+         files: [
+          'bower_components/bitcoinlib-js/**/*.js'
+         ],
+         tasks: ['newer:browserify']
+      },
+      carbonJS: {
+         files: [
+          'extjs/**/*.js',
+          'vendorjs/**/*.js'
+         ],
+         tasks: ['newer:uglify']
+      },
+      appJS: {
+         files: [
+          'js/src-js/*.js'
+         ],
+         tasks: ['newer:concat:dev']
+      },
+      jadeML: {
+         files: ['jade/**/*.jade'],
+         tasks: ['newer:jade']
+      }
+    },
+    concurrent: {
+      dev: {
+        tasks: ['http-server', 'watch'],
+        options: {
+          logConcurrentOutput: true
+        }
+      }
+    },
+    'http-server': {
+        'dev': {
+            // the server root directory
+            root: "./app",
+            port: 8282,
+            host: "127.0.0.1",
+            cache: 1,
+            showDir : true,
+            autoIndex: true,
+            defaultExt: "html"
+        }
     }
   });
 
@@ -117,6 +167,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jade');
+  grunt.loadNpmTasks('grunt-http-server');
 
-  grunt.registerTask('default', ['copy:vendor', 'browserify', 'concat', 'uglify', 'jade']);
+  grunt.registerTask('default', ['copy:vendor', 'browserify', 'concat:dist', 'uglify', 'jade']);
+  grunt.registerTask('serve', ['newer:copy:vendor', 'newer:concat:dev', 'newer:jade', 'concurrent']);
 };
