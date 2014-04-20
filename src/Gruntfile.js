@@ -67,7 +67,7 @@ module.exports = function(grunt) {
         dev: {
             src: ['js/src-js/util.js', 'js/src-js/tx.js', 'js/src-js/helloblock.js', 'js/src-js/wallet.js', 'js/src-js/carbonwallet-app.js', 'js/src-js/carbonwallet-dash.js'],
             dest: 'app/js/app.min.js' // This is not minified, but is only used for development purposes - saves uglifiying for every change
-        },
+        }
     },
     uglify: {
       options: {
@@ -170,5 +170,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-http-server');
 
   grunt.registerTask('default', ['copy:vendor', 'browserify', 'concat:dist', 'uglify', 'jade']);
-  grunt.registerTask('serve', ['newer:copy:vendor', 'newer:concat:dev', 'newer:jade', 'concurrent']);
+  // grunt.registerTask('serve', ['default', 'newer:copy:vendor', 'newer:concat:dev', 'newer:jade', 'concurrent']);
+  grunt.registerTask('serve', "Dev server", function() {
+      if (!grunt.file.exists("vendorjs/bitcoinjs-lib.js")) {
+          // browserify has not run
+          grunt.task.run("default");
+      }
+      grunt.task.run(['newer:copy:vendor', 'newer:concat:dev', 'newer:jade', 'concurrent']);
+  })
 };

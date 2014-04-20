@@ -27,7 +27,6 @@ var WALLET = new function ()
   }
 
   this.updateAllBalances = function() {
-
     var addresses = [];
 
     for(i = 0; i < this.getKeys().length; i++)
