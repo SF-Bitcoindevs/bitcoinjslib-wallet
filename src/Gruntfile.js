@@ -48,7 +48,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: [
-        {"vendorjs/bitcoinjs-lib.js": ["bower_components/bitcoinjs-lib/src/index.js"]}
+        {"vendorjs/bitcoinjs-lib.js": ["bower_components/bitcoinjs-lib/src/index.js"]},
         ],
         options: {
           transform: ["coffeeify", "jadeify"],
@@ -61,11 +61,11 @@ module.exports = function(grunt) {
             separator: ';',
         },
         dist: {
-            src: ['js/src-js/util.js', 'js/src-js/tx.js', 'js/src-js/helloblock.js', 'js/src-js/wallet.js', 'js/src-js/carbonwallet-app.js', 'js/src-js/carbonwallet-dash.js'],
+            src: ['js/src-js/hb.js', 'js/src-js/helloblock.js', 'js/src-js/consts.js', 'js/src-js/util.js', 'js/src-js/tx.js', 'js/src-js/wallet.js', 'js/src-js/carbonwallet-app.js', 'js/src-js/carbonwallet-dash.js'],
             dest: 'js/app.js'
         },
         dev: {
-            src: ['js/src-js/util.js', 'js/src-js/tx.js', 'js/src-js/helloblock.js', 'js/src-js/wallet.js', 'js/src-js/carbonwallet-app.js', 'js/src-js/carbonwallet-dash.js'],
+            src: ['js/src-js/hb.js', 'js/src-js/helloblock.js', 'js/src-js/consts.js', 'js/src-js/util.js', 'js/src-js/tx.js', 'js/src-js/wallet.js', 'js/src-js/carbonwallet-app.js', 'js/src-js/carbonwallet-dash.js'],
             dest: 'app/js/app.min.js' // This is not minified, but is only used for development purposes - saves uglifiying for every change
         }
     },
@@ -88,7 +88,8 @@ module.exports = function(grunt) {
             'extjs/qrcode.js',
             'extjs/mnemonic.js',
             'extjs/electrum.js',
-            'vendorjs/gibberish-aes/gibberish-aes.js'
+            'vendorjs/gibberish-aes/gibberish-aes.js',
+            'vendorjs/helloblock.js'
           ],
           'app/js/app.min.js': [
             'js/app.js'

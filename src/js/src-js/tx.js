@@ -60,7 +60,7 @@ var TX = new function () {
     }
 
     this.getAddress = function() {
-        return eckey.getAddress().toString();
+        return eckey.getAddress(NETWORK_VERSION).toString();
     }
 
     this.parseInputs = function(text, address) {
@@ -84,8 +84,7 @@ var TX = new function () {
                 if (!inputs[hash].hasOwnProperty(index))
                     continue;
                 var script = parseScript(inputs[hash][index].script);
-                var b64hash = Bitcoin.convert.bytesToBase64(Bitcoin.convert.hexToBytes(hash));
-                var txin = new Bitcoin.TransactionIn({outpoint: {hash: b64hash, index: index}, script: script, sequence: 4294967295});
+                var txin = new Bitcoin.TransactionIn({outpoint: {hash: hash, index: index}, script: script, sequence: 4294967295});
                 selectedOuts.push(txin);
                 sendTx.addInput(txin);
             }
@@ -102,10 +101,10 @@ var TX = new function () {
         for (var i = 0; i < sendTx.ins.length; i++) {
             var connectedScript = selectedOuts[i].script;
             var hash = sendTx.hashTransactionForSignature(connectedScript, i, hashType);
-            var pubKeyHash = connectedScript.simpleOutPubKeyHash();
+            var pubKeyHash = connectedScript.toScriptHash();
             var signature = eckey.sign(hash);
             signature.push(parseInt(hashType, 10));
-            var pubKey = eckey.getPub();
+            var pubKey = eckey.getPub().toBytes();
             var script = new Bitcoin.Script();
             script.writeBytes(signature);
             script.writeBytes(pubKey);
@@ -120,7 +119,7 @@ var TX = new function () {
         var hash = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(buf), {asBytes: true}), {asBytes: true});
 
         var r = {};
-        r['hash'] = Bitcoin.convert.bytesToHex(hash.reverse());
+        r['hash'] = Bitcoin.convert.bytesToHex( Bitcoin.convert.wordArrayToBytes( hash ).reverse() );
         r['ver'] = sendTx.version;
         r['vin_sz'] = sendTx.ins.length;
         r['vout_sz'] = sendTx.outs.length;
@@ -131,7 +130,7 @@ var TX = new function () {
 
         for (var i = 0; i < sendTx.ins.length; i++) {
             var txin = sendTx.ins[i];
-            var hash = Bitcoin.convert.base64ToBytes(txin.outpoint.hash);
+            var hash = Bitcoin.convert.hexToBytes(txin.outpoint.hash);
             var n = txin.outpoint.index;
             var prev_out = {'hash': Bitcoin.convert.bytesToHex(hash.reverse()), 'n': n};
 
@@ -146,8 +145,7 @@ var TX = new function () {
 
         for (var i = 0; i < sendTx.outs.length; i++) {
             var txout = sendTx.outs[i];
-            var bytes = txout.value.slice(0);
-            var fval = parseFloat(Bitcoin.Util.formatValue(bytes.reverse()));
+            var fval = txout.value / 100000000.0;
             var value = fval.toFixed(8);
             var spk = dumpScript(txout.script);
             r['out'].push({'value' : value, 'scriptPubKey': spk});
@@ -164,8 +162,8 @@ function dumpScript(script) {
     var out = [];
     for (var i = 0; i < script.chunks.length; i++) {
         var chunk = script.chunks[i];
-        var op = new Bitcoin.Opcode(chunk);
-        typeof chunk == 'number' ?  out.push(op.toString()) :
+        var op = Bitcoin.Opcode.reverseMap[chunk];
+        typeof chunk == 'number' ?  out.push(op) :
             out.push(Bitcoin.convert.bytesToHex(chunk));
     }
     return out.join(' ');
