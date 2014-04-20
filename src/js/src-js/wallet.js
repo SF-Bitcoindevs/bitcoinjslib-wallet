@@ -12,9 +12,8 @@ var WALLET = new function ()
   };
 
   this.getBalance = function() {
-
-    balance = 0
-		for(i = 0; i < 10; i++) {
+    balance = 0;
+	for(i = 0; i < 10; i++) {
       _b = parseFloat($('#balance' + i).text());
       if (!isNaN(_b)) {
         balance = balance + _b;
@@ -28,9 +27,7 @@ var WALLET = new function ()
   }
 
   this.updateAllBalances = function() {
-
     var addresses = [];
-    console.log(this.getKeys());
 
     for(i = 0; i < this.getKeys().length; i++)
     {
@@ -38,11 +35,11 @@ var WALLET = new function ()
     }
 
     helloblock.retrieveAllBalances(addresses, function(addresses) {
-			for(i = 0; i < addresses.length; i++) {
-        var addr = addresses[i];
-				var bal = addr.balance;
-        $('#balance' + i).text(bal);
-			}
+		for(i = 0; i < addresses.length; i++) {
+            var addr = addresses[i];
+			var bal = addr.balance;
+            $('#balance' + i).text(bal);
+		}
     });
   };
 
