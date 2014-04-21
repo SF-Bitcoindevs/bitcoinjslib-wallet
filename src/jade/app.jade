@@ -1,0 +1,379 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='js/vendor/font-awesome/css/font-awesome.css')
+    link(rel='stylesheet', href='css/app.css')
+    link(rel='stylesheet', href='css/carbon-wallet.css')
+    link(href='assets/favicon.ico', rel='shortcut icon')
+    link(href='assets/apple-touch-icon.png', rel='apple-touch-icon')
+    //if lt IE 9
+      | @javascript html5shiv respond.min
+    title SF Bitcoin-devs HD Wallet - Secure Deterministic Bitcoin Wallet
+  body
+    // The Login Page
+    #logon.all-wrapper.no-menu-wrapper
+      .login-logo-w
+        a.logo(href='#')
+          i.fa.fa-cloud-download
+          span SF Bitcoin-devs HD Wallet
+      .row
+        .col-md-10.col-md-offset-1
+          .content-wrapper.bold-shadow
+            .content-inner
+              .main-content.main-content-grey-gradient.no-page-header
+                .main-content-inner
+                  form
+                    h3.form-title.form-title-first
+                      i.fa.fa-lock
+                      | Login With Your Passphrase
+                    .form-group
+                      input#password.form-control(placeholder='Enter your SF Bitcoin-devs HD Wallet 12 word passphrase or click on \'Start a new wallet\' if you are new user.', value='', type='password')
+                    input#open-sesame.btn.btn-primary(disabled='disabled', data-toggle='collapse', data-target='#create-keys', value='Open Wallet')
+                    | &nbsp;
+                    input#generate-password.btn.btn-success(data-toggle='collapse', data-target='#create-wallet', value='Start a new wallet')
+                  br
+                  #create-keys.collapse
+                    .progress
+                      #seed-progress.progress-bar(style='width: 0%;')
+                  #create-wallet.collapse
+                    h4 To use SF Bitcoin-devs HD Wallet you need a passphrase.
+                    p
+                      | We have created a secure passphrase for you in the box below. Write
+                      | your passphrase down and keep it safe.
+                    div
+                      .input-group
+                        input#generated.form-control(readonly='readonly', value='', type='text')
+                        span#regenerate-password.input-group-addon(data-toggle='tooltip', title='Click to generate another random passphrase.')
+                          i.fa.fa-repeat
+                    p
+                      em
+                        | Make sure no-one is near you when you use this passphrase.
+                        | If anyone sees your passphrase, or gets it from you,
+                        | they can steal your Bitcoins.
+    // The Decrypt URL Page
+    #decrypt-url.all-wrapper.no-menu-wrapper
+      .login-logo-w
+        a.logo(href='#')
+          i.fa.fa-cloud-download
+          span SF Bitcoin-devs HD Wallet
+      .row
+        .col-md-10.col-md-offset-1
+          .content-wrapper.bold-shadow
+            .content-inner
+              .main-content.main-content-grey-gradient.no-page-header
+                .main-content-inner
+                  form
+                    h3.form-title.form-title-first
+                      i.fa.fa-lock
+                      | Decrypt Your Wallet Passphrase
+                    .form-group
+                      input#enc-password.form-control(placeholder='Enter the password you used to encrypt your passphrase', value='', type='password')
+                    input#open-with-password.btn.btn-primary(value='Decrypt and Open')
+    // The Main Page
+    #site.all-wrapper
+      .row
+        .col-md-3
+          .text-center
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+              span.sr-only Toggle navigation
+              span.fa.fa-bar
+              span.fa.fafa.fa-bar
+              span.fa.fa-bar
+          .side-bar-wrapper.collapse.navbar-collapse.navbar-ex1-collapse
+            a.logo.hidden-sm.hidden-xs(href='#')
+              i.fa.fa-cloud-download
+              span SF Bitcoin-devs HD Wallet
+            .relative-w
+              ul.side-menu
+                li.current
+                  a#your-dashboard-nav(href='#')
+                    i.fa.fa-dashboard
+                    | Dashboard
+                li
+                  a#your-addresses-nav(href='#')
+                    i.fa.fa-bitcoin
+                    | Received
+                li
+                  a#make-payment-nav(href='#')
+                    span.badge.pull-right
+                    i.fa.fa-exchange
+                    | Make Payment
+        .col-md-9
+          .content-wrapper
+            .content-inner
+              .page-header
+                .header-links.hidden-xs
+                  a#passphrase(href='#')
+                    i.fa.fa-sign-out
+                    | Passphrase
+                  a#logout(href='#')
+                    i.fa.fa-sign-out
+                    | Logout
+                h1
+                  i.fa.fa-bar-chart
+                  | Your Addresses
+              ol.breadcrumb
+                li
+                  a(href='#') Home
+                li.active Addresses
+              .main-content
+                // Start of dashboard
+                #dashboard.widget
+                  h3.section-title.first-title
+                    i.fa.fa-table
+                    | Dashboard
+                  .widget-content-white.glossed
+                    .padded
+                      h3.section-title.first-title
+                        i.icon-tasks
+                        | Statistics
+                      .row
+                        .col-lg-3.col-md-4.col-sm-6.text-center
+                          .widget-content-blue-wrapper.changed-up
+                            .widget-content-blue-inner.padded
+                              .pre-value-block
+                                i.icon-dashboard
+                                | BTC Price
+                              .value-block
+                                #btc-price.value-self Loading..
+                                .value-sub 24 Hour Average
+                        .col-lg-3.col-md-4.col-sm-6.text-center
+                          .widget-content-blue-wrapper.changed-up
+                            .widget-content-blue-inner.padded
+                              .pre-value-block
+                                i.icon-user
+                                | BTC Balance
+                              .value-block
+                                #btc-balance.value-self Loading..
+                                .value-sub In Your Wallet
+                        .col-lg-3.col-md-4.col-sm-6.text-center
+                          .widget-content-blue-wrapper.changed-up
+                            .widget-content-blue-inner.padded
+                              .pre-value-block
+                                i.icon-money
+                                | Dollar Balance
+                              .value-block
+                                #dollar-balance.value-self Loading..
+                                .value-sub 24 Hour Average
+                // End of create payment screen
+                // Start of addresses screen
+                #your-addresses.widget
+                  h3.section-title.first-title
+                    i.fa.fa-table
+                    | Users Table
+                  .widget-content-white.glossed
+                    .padded
+                      table.table.table-striped.table-bordered.table-hover.datatable
+                        thead
+                          tr
+                            th Public Bitcoin Address
+                            th Balance
+                            th Action
+                        tbody
+                          tr
+                            td
+                              code#address0
+                            td
+                              span
+                                strong#balance0  
+                            td
+                              i#qrcode0.fa.fa-qrcode
+                          tr
+                            td
+                              code#address1
+                            td
+                              span
+                                strong#balance1  
+                            td
+                              i#qrcode1.fa.fa-qrcode
+                          tr
+                            td
+                              code#address2
+                            td
+                              span
+                                strong#balance2  
+                            td
+                              i#qrcode2.fa.fa-qrcode
+                          tr
+                            td
+                              code#address3
+                            td
+                              span
+                                strong#balance3  
+                            td
+                              i#qrcode3.fa.fa-qrcode
+                          tr
+                            td
+                              code#address4
+                            td
+                              span
+                                strong#balance4  
+                            td
+                              i#qrcode4.fa.fa-qrcode
+                          tr
+                            td
+                              code#address5
+                            td
+                              span
+                                strong#balance5  
+                            td
+                              i#qrcode5.fa.fa-qrcode
+                          tr
+                            td
+                              code#address6
+                            td
+                              span
+                                strong#balance6  
+                            td
+                              i#qrcode6.fa.fa-qrcode
+                          tr
+                            td
+                              code#address7
+                            td
+                              span
+                                strong#balance7  
+                            td
+                              i#qrcode7.fa.fa-qrcode
+                          tr
+                            td
+                              code#address8
+                            td
+                              span
+                                strong#balance8  
+                            td
+                              i#qrcode8.fa.fa-qrcode
+                          tr
+                            td
+                              code#address9
+                            td
+                              span
+                                strong#balance9  
+                            td
+                              i#qrcode9.fa.fa-qrcode
+                // End of addresses screen
+                // Start of create payment screen
+                #tx.widget
+                  h3.section-title.first-title
+                    i.fa.fa-table
+                    | Make a Payment
+                  .widget-content-white.glossed
+                    .padded
+                      form.form-vertical(action='/', method='get')
+                        fieldset
+                          input#txSec.form-control(type='hidden')
+                          .row
+                            .col-xs-7
+                              label(for='txDropAddr') Source Address
+                              select#txDropAddr.form-control
+                            .col-xs-3
+                              label(for='txBalance') Balance
+                              .input-group
+                                input#txBalance.form-control(readonly='readonly', type='text')
+                                span.input-group-addon BTC
+                          br
+                          .row
+                            .col-xs-7
+                              label(for='txDest') Destination Address
+                            .col-xs-3
+                              .input-group
+                                label(for='txValue') Amount
+                          .row.txCC(style='padding-bottom: 10px;')
+                            .col-xs-7
+                              input#txDest.form-control(type='text', placeholder='E.g. 1BountYypWttTvAJcMJVvSRDfX3TJ182To', autocomplete='off')
+                            .col-xs-3
+                              .input-group
+                                input#txValue.form-control(placeholder='E.g. 0.01', type='text', autocomplete='off')
+                                span.input-group-addon BTC
+                            .col-xs-2
+                              span.help-inline.errormsg
+                                button#txAddDest.btn.input-up(style='margin-bottom: 10px;', type='button') +
+                                button#txRemoveDest.btn.input-up(style='margin-bottom: 10px;', type='button', disabled='disabled') –
+                          .row
+                            .col-xs-4
+                              label(for='txFee') Fee (Includes Miners Fee)
+                              .input-group
+                                input#txFee.form-control(readonly='readonly', type='text', value='0.0005')
+                                span.input-group-addon BTC
+                          br
+                          .control-group
+                            label.control-label(for='txFee') You can check the payment before it is sent to the network.
+                            .controls
+                              button#txSend.btn.btn-success(disabled='disabled', style='margin-bottom: 10px;', type='button') Verify and Send
+                // End of create payment screen
+                #verifyModal.modal
+                  .modal-dialog
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                        h6
+                          | Send payment of
+                          span#verifyAmountTitle 0.005
+                          | BTC from
+                          span#verifySource 1BountYypWttTvAJcMJVvSRDfX3TJ182
+                      #verifyBody.modal-body
+                        table.table.table-bordered
+                          thead#verifyTable
+                            tr
+                              th Destination Address
+                              th Amount
+                          tr
+                            td
+                              small
+                                span.label A fee of 0.0005 BTC will be added.
+                            td
+                              small
+                                span
+                                  strong 0.0005
+                          tfoot
+                            tr
+                              td
+                                strong Total
+                              td
+                                strong#verifyTotal 50.05
+                                | BTC
+                        p#tx-toggle
+                          a(data-toggle='collapse', data-target='#advanced-details') Show/Hide Transaction Details (Advanced users)
+                        #advanced-details.collapse
+                          .control-group
+                            label.control-label(for='txJSON') JSON Transaction
+                            .controls
+                              textarea#txJSON.span5(rows='4')
+                          .control-group
+                            label.control-label(for='txHex') Raw Transaction
+                            .controls
+                              textarea#txHex.span5(rows='4')
+                      .modal-footer
+                        a.btn(href='#', data-dismiss='modal') Cancel
+                        button#sendPayment.btn.btn-primary(data-dismiss='modal') Send Payment
+                #alertModal.modal
+                  .modal-dialog
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                        h3 Response
+                      .modal-body
+                        p#alertModalText
+                      .modal-footer
+                        a.btn(href='#', data-dismiss='modal') Close
+                #linkModal.modal
+                  .modal-dialog
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                        h3 Your Passphrase
+                      .modal-body
+                        p
+                          span#linkModalText.alert.alert-info
+                        p To create an encrypted web link, enter a password below.
+                        .form-group
+                          input#link-password.form-control(type='password', value='')
+                          button#gen-link.btn.btn-success(type='button') Generate Link
+                          textarea#link-text.form-control
+                      .modal-footer
+                        a.btn(href='#', data-dismiss='modal') Close
+    // JavaScript created specifically for SF Bitcoin-devs HD Wallet.
+    script(src='js/ext.min.js')
+    script(src='js/app.min.js')
+
