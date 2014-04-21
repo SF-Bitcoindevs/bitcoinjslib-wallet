@@ -2,8 +2,10 @@
 This is a of Carbonwallet with most updated bitcoinlib-js libraries
 
 # Latest Updates
-April 12, 2014
+April 20, 2014
 
-1. Larry pushed a number of changes to get running
+1. We are 420 feature friendly today!
 
-2. Working passphrase.
+2. Srinivasan implemented seeding with testcoins for testnet wallet and grunt for running server
+
+3. Next: Clean up front-end presentation for amounts
