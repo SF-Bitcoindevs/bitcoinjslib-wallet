@@ -84,7 +84,7 @@ var TX = new function () {
                 if (!inputs[hash].hasOwnProperty(index))
                     continue;
                 var script = parseScript(inputs[hash][index].script);
-                var txin = new Bitcoin.TransactionIn({outpoint: {hash: hash, index: index}, script: script, sequence: 4294967295});
+                var txin = new Bitcoin.TransactionIn({outpoint: {hash: hash, index: index}, script: script, sequence:[255,255,255,255]});
                 selectedOuts.push(txin);
                 sendTx.addInput(txin);
             }
@@ -94,7 +94,7 @@ var TX = new function () {
             var address = outputs[i].address;
             var fval = outputs[i].value;
             var value = new Bitcoin.BigInteger('' + Math.round(fval * 1e8), 10);
-            sendTx.addOutput(new Bitcoin.Address(address), value);
+            sendTx.addOutput(address, value);
         }
 
         var hashType = 1;
@@ -116,10 +116,10 @@ var TX = new function () {
     this.toBBE = function(sendTx) {
         //serialize to Bitcoin Block Explorer format
         var buf = sendTx.serialize();
-        var hash = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(buf), {asBytes: true}), {asBytes: true});
+        var hash = Bitcoin.crypto.hash256(buf);
 
         var r = {};
-        r['hash'] = Bitcoin.convert.bytesToHex( Bitcoin.convert.wordArrayToBytes( hash ).reverse() );
+        r['hash'] = Bitcoin.convert.reverseEndian( Bitcoin.convert.bytesToHex( hash ) );
         r['ver'] = sendTx.version;
         r['vin_sz'] = sendTx.ins.length;
         r['vout_sz'] = sendTx.outs.length;

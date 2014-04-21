@@ -4,7 +4,7 @@ var WALLET = new function ()
 
   // Methods
   this.textToBytes = function(text) {
-    return Bitcoin.Crypto.SHA256(text, { asBytes: true });
+    return Bitcoin.crypto.sha256(text);
   };
 
   this.getKeys = function() {

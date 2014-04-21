@@ -7,8 +7,7 @@ function electrum_extend_chain(pubKey, privKey, n, forChange, fromPrivKey) {
     var mode = forChange ? 1 : 0;
     var mpk = pubKey.slice(1);
     var bytes = Bitcoin.convert.stringToBytes(n + ':' + mode + ':').concat(mpk);
-    var firsthash =  Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(bytes), {asBytes: true});
-    var sequence = Bitcoin.convert.wordArrayToBytes(Bitcoin.Crypto.SHA256(firsthash, {asBytes: true}))
+    var sequence = Bitcoin.crypto.hash256( bytes );
     var secexp = null;
     var pt = Bitcoin.ECPointFp.decodeFrom(curve.getCurve(), pubKey);
 
@@ -26,10 +25,8 @@ function electrum_extend_chain(pubKey, privKey, n, forChange, fromPrivKey) {
     var newPriv = secexp ? secexp.toByteArrayUnsigned(): [];
     for(;newPriv.length<32;) newPriv.unshift(0x00);
     var newPub = pt.getEncoded();
-    // var h160 = Bitcoin.Util.sha256ripe160(newPub);
-    var s256 =  Bitcoin.Crypto.SHA256( Bitcoin.convert.bytesToWordArray( newPub ) );
-    var h160 = Bitcoin.Crypto.RIPEMD160( s256 );
-    var addr = new Bitcoin.Address(h160.toString());
+    var h160 = Bitcoin.crypto.hash160( newPub );
+    var addr = new Bitcoin.Address( h160, NETWORK_VERSION );
     var sec = secexp ? new Bitcoin.Address(newPriv) : '';
     if (secexp)
         sec.version = 128;
@@ -63,8 +60,10 @@ var Electrum = new function () {
         if (rounds < seedRounds) {
             var portion = seedRounds / 100;
             onUpdate(rounds * 100 / seedRounds, seed);
-            for (var i = 0; i < portion; i++)
-                seed = Bitcoin.convert.wordArrayToBytes( Bitcoin.Crypto.SHA256(Bitcoin.convert.bytesToWordArray(seed.concat(oldseed)), {asBytes:true}) );
+            for (var i = 0; i < portion; i++) {
+                seed = Bitcoin.crypto.sha256(seed.concat(oldseed));
+                seed = Bitcoin.convert.wordsToBytes( Bitcoin.convert.bytesToWords( seed ))
+            }
             rounds += portion;
             if (rounds < seedRounds) {
                 timeout = setTimeout(calcSeed, 0);

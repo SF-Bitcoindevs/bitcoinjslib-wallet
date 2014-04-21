@@ -13511,19 +13511,16 @@ Transaction.prototype.addOutput = function (address, value) {
     return
   }
 
-  if (arguments[0] instanceof Address ) {
-    this.outs.push(new TransactionOut({
-      value: value,
-      script: Script.createOutputScript(address)
-    }))
-    return;
-  }
-
   if (arguments[0].indexOf(':') >= 0) {
     var args = arguments[0].split(':')
     address = args[0]
     value = parseInt(args[1])
   }
+
+  this.outs.push(new TransactionOut({
+    value: value,
+    script: Script.createOutputScript(address)
+  }))
 }
 
 /**
@@ -13548,7 +13545,7 @@ Transaction.prototype.serialize = function () {
     var scriptBytes = txin.script.buffer
     buffer = buffer.concat(convert.numToVarInt(scriptBytes.length))
     buffer = buffer.concat(scriptBytes)
-    buffer = buffer.concat(convert.numToBytes(txin.sequence, 4))
+    buffer = buffer.concat(txin.sequence)
   })
 
   buffer = buffer.concat(convert.numToVarInt(this.outs.length))
@@ -13628,50 +13625,6 @@ Transaction.prototype.hashTransactionForSignature =
   buffer = buffer.concat(convert.numToBytes(parseInt(hashType), 4))
 
   return crypto.hash256(buffer)
-}
-
-Transaction.prototype.transactionForSignature =
-  function (connectedScript, inIndex, hashType)
-{
-  var txTmp = this.clone()
-
-  // In case concatenating two scripts ends up with two codeseparators,
-  // or an extra one at the end, this prevents all those possible
-  // incompatibilities.
-  /*scriptCode = scriptCode.filter(function (val) {
-    return val !== OP_CODESEPARATOR
-    });*/
-
-  // Blank out other inputs' signatures
-  txTmp.ins.forEach(function(txin) {
-    txin.script = new Script()
-  })
-
-  txTmp.ins[inIndex].script = connectedScript
-
-  // Blank out some of the outputs
-  if ((hashType & 0x1f) == SIGHASH_NONE) {
-    txTmp.outs = []
-
-    // Let the others update at will
-    txTmp.ins.forEach(function(txin, i) {
-      if (i != inIndex) {
-        txTmp.ins[i].sequence = 0
-      }
-    })
-
-  } else if ((hashType & 0x1f) == SIGHASH_SINGLE) {
-    // TODO: Implement
-  }
-
-  // Blank out other inputs completely, not recommended for open transactions
-  if (hashType & SIGHASH_ANYONECANPAY) {
-    txTmp.ins = [txTmp.ins[inIndex]]
-  }
-
-  var buffer = txTmp.serialize()
-  buffer = buffer.concat(convert.numToBytes(parseInt(hashType), 4))
-  return buffer;
 }
 
 /**
