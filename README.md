@@ -12,7 +12,8 @@ Develop: Serve html & watch for changes
 
 1. grunt serve
 2. goto http://localhost:8282
-3. Modify js/js-src/*.js
+3. Modify js/*.js or jade/*.jade and grunt will recreate .min.js and
+   .html accordingly
 
 Notes
 -----
