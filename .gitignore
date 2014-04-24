@@ -1,6 +1,4 @@
 **/.DS_Store
-src/node_modules
-src/bower_components
-src/vendorjs
-src/app
-src/js/app.js
+node_modules
+bower_components
+app

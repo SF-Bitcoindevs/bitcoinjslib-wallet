@@ -7,7 +7,6 @@
     "jquery": "~1.11.0",
     "font-awesome": "~4.0.3",
     "gibberish-aes": "https://github.com/mdp/gibberish-aes.git",
-    "bitcoinjs-lib": "https://github.com/bitcoinjs/bitcoinjs-lib.git",
     "secure-random": "https://github.com/jprichardson/secure-random.git"
   }
 }

@@ -42,13 +42,13 @@ var WALLET = new function ()
         } else {
             console.log(data);
         }
-    helloblock.retrieveAllBalances(addresses, function(addresses) {
-        for(i = 0; i < addresses.length; i++) {
-            var addr = addresses[i];
-            var bal = addr.balance / 100000000.0;
-            $('#balance' + i).text(bal);
-        }
-    });
+        helloblock.retrieveAllBalances(addresses, function(addresses) {
+            for(i = 0; i < addresses.length; i++) {
+                var addr = addresses[i];
+                var bal = addr.balance / 100000000.0;
+                $('#balance' + i).text(bal);
+            }
+        });
     }
 
     for(i = 0; i < this.getKeys().length; i++)
