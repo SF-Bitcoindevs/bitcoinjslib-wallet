@@ -84,7 +84,7 @@ var TX = new function () {
                 if (!inputs[hash].hasOwnProperty(index))
                     continue;
                 var script = parseScript(inputs[hash][index].script);
-                var txin = new Bitcoin.TransactionIn({outpoint: {hash: hash, index: index}, script: script, sequence: 4294967295});
+                var txin = new Bitcoin.TransactionIn({outpoint: {hash: hash, index: index}, script: script, sequence:[255,255,255,255]});
                 selectedOuts.push(txin);
                 sendTx.addInput(txin);
             }
@@ -94,7 +94,7 @@ var TX = new function () {
             var address = outputs[i].address;
             var fval = outputs[i].value;
             var value = new Bitcoin.BigInteger('' + Math.round(fval * 1e8), 10);
-            sendTx.addOutput(new Bitcoin.Address(address), value);
+            sendTx.addOutput(address, value);
         }
 
         var hashType = 1;
