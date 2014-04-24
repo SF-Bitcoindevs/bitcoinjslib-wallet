@@ -1,0 +1,18 @@
+#decrypt-url.all-wrapper.no-menu-wrapper
+  .login-logo-w
+    a.logo(href='#')
+      i.fa.fa-cloud-download
+        span #{organization} #{product}
+  .row
+    .col-md-10.col-md-offset-1
+      .content-wrapper.bold-shadow
+        .content-inner
+          .main-content.main-content-grey-gradient.no-page-header
+            .main-content-inner
+              form
+                h3.form-title.form-title-first
+                  i.fa.fa-lock
+                  | Decrypt Your Wallet Passphrase
+                .form-group
+                  input#enc-password.form-control(placeholder='Enter the password you used to encrypt your passphrase', value='', type='password')
+                input#open-with-password.btn.btn-primary(value='Decrypt and Open')
