@@ -73,12 +73,8 @@ $(document).ready(function() {
   $('#regenerate-password').click(regeneratePassword);
   $('#regenerate-password').tooltip();
 
-  $('#your-addresses-nav, #home').click(function(){
-    hideAll();
-    $('#your-addresses').show();
-    $('#your-addresses-nav').parent().addClass('current');
-    return false;
-  });
+  $('#your-addresses-nav, #home').click(showAddresses);
+
 
   $('#make-payment-nav').click(function(){
     hideAll();
@@ -122,6 +118,13 @@ $(document).ready(function() {
     $('#link-text').text('http://carbonwallet.com/app.html#' + key);
     return false;
   });
+
+  function showAddresses() {
+    hideAll();
+    $('#your-addresses').show();
+    $('#your-addresses-nav').parent().addClass('current');
+    return false;
+  };
 
   function alertModal(text) {
     $('#alertModalText').text(text || 'Nevermind');
@@ -323,6 +326,7 @@ $(document).ready(function() {
       alertModal(text ? text : 'No response!');
 
       WALLET.updateAllBalances();
+      showAddresses();
   }
 
   function txVerify() {
