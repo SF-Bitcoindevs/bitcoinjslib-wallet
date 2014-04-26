@@ -48,10 +48,10 @@ This software is alpha software. Please make sure to run only on a clean web bro
 
 
 ## Authors
-[Sidney Zhang](https://github.com/sidazhang)
-[Larry Kang](https://github.com/lkang)
-[Srinivasan Sriram](https://github.com/ssr1ram)
-[Taariq Lewis](https://github.com/taariq)
+* [Sidney Zhang](https://github.com/sidazhang)
+* [Larry Kang](https://github.com/lkang)
+* [Srinivasan Sriram](https://github.com/ssr1ram)
+* [Taariq Lewis](https://github.com/taariq)
 
 ## Contributing
 Feel free to send pull requests to have your project/startup listed here.
