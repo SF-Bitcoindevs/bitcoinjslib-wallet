@@ -37,7 +37,7 @@ SF Bitcoindev build a determinist web wallet forked from Carbon Wallet. Anyone c
 1. Put them in the /spec dir
 2. Run them after making a change:
 
-    open SpecRunner.html
+    `open SpecRunner.html`
 
 ### Use Testnet
 1. grunt serve
