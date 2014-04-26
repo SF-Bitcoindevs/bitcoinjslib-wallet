@@ -13,15 +13,16 @@ SF Bitcoindev build a determinist web wallet forked from Carbon Wallet. Anyone c
 
 
 ## Installation
-$ npm install -g grunt-cli
-
-$ npm install -g bower
+1. $ git clone https://github.com/SF-Bitcoindevs/bitcoinjslib-wallet.git
+2. $ cd bitcoinjslib-wallet
+3. $ npm install -g grunt-cli
+4. $ npm install -g bower
 
 
 ## Usage
 ### Use: Generate Static html
-1. grunt
-2. open app/app.html
+1. $ grunt
+2. $ open app/app.html
 
 ### Develop: Serve html & watch for changes
 1. grunt serve
