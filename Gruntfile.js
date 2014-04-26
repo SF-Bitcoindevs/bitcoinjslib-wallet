@@ -65,6 +65,7 @@ module.exports = function(grunt) {
     jade: {
         compile: {
             options: {
+                pretty: true,
                 data: function(dest, src) {
                     // Return an object of data to pass to templates
                     return require('./jade/jade-data.json');
