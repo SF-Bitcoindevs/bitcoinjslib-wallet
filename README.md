@@ -33,9 +33,17 @@ SF Bitcoindev build a determinist web wallet forked from Carbon Wallet. Anyone c
 3. Modify js/*.js or jade/*.jade and grunt will recreate .min.js and
    .html accordingly
 
+### Specs: It's easy and helps keep the project running!
+1. Put them in the /spec dir
+2. Run them after making a change:
+
+    `open SpecRunner.html`
+
 ### Use Testnet
 1. grunt serve
 2. http://127.0.0.1:8282/app.html?testnet=1
+
+
 
 
 
