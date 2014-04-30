@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="js/vendor/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/carbon-wallet.css">
+    <link href="assets/favicon.ico" rel="shortcut icon">
+    <link href="assets/apple-touch-icon.png" rel="apple-touch-icon">
+    <!--if lt IE 9| @javascript html5shiv respond.min
+    -->
+    <title>SF Bitcoin Devs HD Wallet - A Secure Hierarchial Deterministic Wallet</title>
+  </head>
+  <body>
+    <div id="logon" class="all-wrapper no-menu-wrapper">
+      <div class="login-logo-w"><a href="#" class="logo"><i class="fa fa-cloud-download"><span>SF Bitcoin Devs HD Wallet</span></i></a></div>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="content-wrapper bold-shadow">
+            <div class="content-inner">
+              <div class="main-content main-content-grey-gradient no-page-header">
+                <div class="main-content-inner">
+                  <form>
+                    <h3 class="form-title form-title-first"><i class="fa fa-lock"></i>Login With Your Passphrase</h3>
+                    <div class="form-group">
+                      <input id="password" placeholder="Enter your SF Bitcoin Devs HD Wallet 12 word passphrase or click on 'Start a new wallet' if you are new user." value="" type="password" class="form-control">
+                    </div>
+                    <input id="open-sesame" disabled="disabled" data-toggle="collapse" data-target="#create-keys" value="Open Wallet" class="btn btn-primary">&nbsp;
+                    <input id="generate-password" data-toggle="collapse" data-target="#create-wallet" value="Start a new wallet" class="btn btn-success">
+                  </form><br>
+                  <div id="create-keys" class="collapse">
+                    <div class="progress">
+                      <div id="seed-progress" style="width: 0%;" class="progress-bar"></div>
+                    </div>
+                  </div>
+                  <div id="create-wallet" class="collapse">
+                    <h4>To use SF Bitcoin Devs HD Wallet you need a passphrase.</h4>
+                    <p>
+                      We have created a secure passphrase for you in the box below. Write
+                      your passphrase down and keep it safe.
+                    </p>
+                    <div>
+                      <div class="input-group">
+                        <input id="generated" readonly="readonly" value="" type="text" class="form-control"><span id="regenerate-password" data-toggle="tooltip" title="Click to generate another random passphrase." class="input-group-addon"><i class="fa fa-repeat"></i></span>
+                      </div>
+                    </div>
+                    <p><em>
+                        Make sure no-one is near you when you use this passphrase.
+                        If anyone sees your passphrase, or gets it from you,
+                        they can steal your Bitcoins.</em></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="decrypt-url" class="all-wrapper no-menu-wrapper">
+      <div class="login-logo-w"><a href="#" class="logo"><i class="fa fa-cloud-download"><span>SF Bitcoin Devs HD Wallet</span></i></a></div>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="content-wrapper bold-shadow">
+            <div class="content-inner">
+              <div class="main-content main-content-grey-gradient no-page-header">
+                <div class="main-content-inner">
+                  <form>
+                    <h3 class="form-title form-title-first"><i class="fa fa-lock"></i>Decrypt Your Wallet Passphrase</h3>
+                    <div class="form-group">
+                      <input id="enc-password" placeholder="Enter the password you used to encrypt your passphrase" value="" type="password" class="form-control">
+                    </div>
+                    <input id="open-with-password" value="Decrypt and Open" class="btn btn-primary">
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- The Main Page-->
+    <div id="site" class="all-wrapper">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="text-center">
+            <button type="button" data-toggle="collapse" data-target=".navbar-ex1-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="fa fa-bar"></span><span class="fa fafa fa-bar"></span><span class="fa fa-bar"></span></button>
+          </div>
+          <div class="side-bar-wrapper collapse navbar-collapse navbar-ex1-collapse"><a href="#" class="logo hidden-sm hidden-xs"><i class="fa fa-cloud-download"><span>SF Bitcoin Devs HD Wallet</span></i></a>
+            <div class="relative-w">
+              <ul class="side-menu">
+                <li class="current"><a id="your-dashboard-nav" href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                <li><a id="your-addresses-nav" href="#"><i class="fa fa-bitcoin"></i>Received</a></li>
+                <li><a id="make-payment-nav" href="#"><span class="badge pull-right"></span><i class="fa fa-exchange"></i>Make Payment</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="content-wrapper">
+            <div class="content-inner">
+              <div class="page-header">
+                <div class="header-links hidden-xs"><a id="passphrase" href="#"><i class="fa fa-sign-out"></i>Passphrase</a><a id="logout" href="#"><i class="fa fa-sign-out"></i>Logout</a></div>
+                <h1><i class="fa fa-bar-chart"></i>Your Addresses</h1>
+              </div>
+              <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li class="active">Addresses</li>
+              </ol>
+              <div class="main-content">
+                <!-- Start of dashboard-->
+                <div id="dashboard" class="widget">
+                  <h3 class="section-title first-title"><i class="fa fa-table"></i>Dashboard</h3>
+                  <div class="widget-content-white glossed">
+                    <div class="padded">
+                      <h3 class="section-title first-title"><i class="icon-tasks"></i>Statistics</h3>
+                      <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                          <div class="widget-content-blue-wrapper changed-up">
+                            <div class="widget-content-blue-inner padded">
+                              <div class="pre-value-block"><i class="icon-dashboard"></i>BTC Price</div>
+                              <div class="value-block">
+                                <div id="btc-price" class="value-self">Loading..</div>
+                                <div class="value-sub">24 Hour Average</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                          <div class="widget-content-blue-wrapper changed-up">
+                            <div class="widget-content-blue-inner padded">
+                              <div class="pre-value-block"><i class="icon-user"></i>BTC Balance</div>
+                              <div class="value-block">
+                                <div id="btc-balance" class="value-self">Loading..</div>
+                                <div class="value-sub">In Your Wallet</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                          <div class="widget-content-blue-wrapper changed-up">
+                            <div class="widget-content-blue-inner padded">
+                              <div class="pre-value-block"><i class="icon-money"></i>Dollar Balance</div>
+                              <div class="value-block">
+                                <div id="dollar-balance" class="value-self">Loading..</div>
+                                <div class="value-sub">24 Hour Average</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End of create payment screen-->
+                <!-- Start of addresses screen-->
+                <div id="your-addresses" class="widget">
+                  <h3 class="section-title first-title"><i class="fa fa-table"></i>Users Table</h3>
+                  <div class="widget-content-white glossed">
+                    <div class="padded">
+                      <table class="table table-striped table-bordered table-hover datatable">
+                        <thead>
+                          <tr>
+                            <th>Public Bitcoin Address</th>
+                            <th>Balance</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><code id="address0"></code></td>
+                            <td><span><strong id="balance0"> </strong></span></td>
+                            <td><i id="qrcode0" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address1"></code></td>
+                            <td><span><strong id="balance1"> </strong></span></td>
+                            <td><i id="qrcode1" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address2"></code></td>
+                            <td><span><strong id="balance2"> </strong></span></td>
+                            <td><i id="qrcode2" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address3"></code></td>
+                            <td><span><strong id="balance3"> </strong></span></td>
+                            <td><i id="qrcode3" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address4"></code></td>
+                            <td><span><strong id="balance4"> </strong></span></td>
+                            <td><i id="qrcode4" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address5"></code></td>
+                            <td><span><strong id="balance5"> </strong></span></td>
+                            <td><i id="qrcode5" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address6"></code></td>
+                            <td><span><strong id="balance6"> </strong></span></td>
+                            <td><i id="qrcode6" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address7"></code></td>
+                            <td><span><strong id="balance7"> </strong></span></td>
+                            <td><i id="qrcode7" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address8"></code></td>
+                            <td><span><strong id="balance8"> </strong></span></td>
+                            <td><i id="qrcode8" class="fa fa-qrcode"></i></td>
+                          </tr>
+                          <tr>
+                            <td><code id="address9"></code></td>
+                            <td><span><strong id="balance9"> </strong></span></td>
+                            <td><i id="qrcode9" class="fa fa-qrcode"></i></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!-- End of addresses screen-->
+                <!-- Start of create payment screen-->
+                <div id="tx" class="widget">
+                  <h3 class="section-title first-title"><i class="fa fa-table"></i>Make a Payment</h3>
+                  <div class="widget-content-white glossed">
+                    <div class="padded">
+                      <form action="/" method="get" class="form-vertical">
+                        <fieldset>
+                          <input id="txSec" type="hidden" class="form-control">
+                          <div class="row">
+                            <div class="col-xs-7">
+                              <label for="txDropAddr">Source Address</label>
+                              <select id="txDropAddr" class="form-control"></select>
+                            </div>
+                            <div class="col-xs-3">
+                              <label for="txBalance">Balance</label>
+                              <div class="input-group">
+                                <input id="txBalance" readonly="readonly" type="text" class="form-control"><span class="input-group-addon">BTC</span>
+                              </div>
+                            </div>
+                          </div><br>
+                          <div class="row">
+                            <div class="col-xs-7">
+                              <label for="txDest">Destination Address</label>
+                            </div>
+                            <div class="col-xs-3">
+                              <div class="input-group">
+                                <label for="txValue">Amount</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="padding-bottom: 10px;" class="row txCC">
+                            <div class="col-xs-7">
+                              <input id="txDest" type="text" placeholder="E.g. 1BountYypWttTvAJcMJVvSRDfX3TJ182To" autocomplete="off" class="form-control">
+                            </div>
+                            <div class="col-xs-3">
+                              <div class="input-group">
+                                <input id="txValue" placeholder="E.g. 0.01" type="text" autocomplete="off" class="form-control"><span class="input-group-addon">BTC</span>
+                              </div>
+                            </div>
+                            <div class="col-xs-2"><span class="help-inline errormsg">
+                                <button id="txAddDest" style="margin-bottom: 10px;" type="button" class="btn input-up">+</button>
+                                <button id="txRemoveDest" style="margin-bottom: 10px;" type="button" disabled="disabled" class="btn input-up">–</button></span></div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-4">
+                              <label for="txFee">Fee (Includes Miners Fee)</label>
+                              <div class="input-group">
+                                <input id="txFee" readonly="readonly" type="text" value="0.0005" class="form-control"><span class="input-group-addon">BTC</span>
+                              </div>
+                            </div>
+                          </div><br>
+                          <div class="control-group">
+                            <label for="txFee" class="control-label">You can check the payment before it is sent to the network.</label>
+                            <div class="controls">
+                              <button id="txSend" disabled="disabled" style="margin-bottom: 10px;" type="button" class="btn btn-success">Verify and Send</button>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <!-- End of create payment screen-->
+                <div id="verifyModal" class="modal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                        <h6>Send payment of<span id="verifyAmountTitle">0.005</span>BTC from<span id="verifySource">1BountYypWttTvAJcMJVvSRDfX3TJ182</span></h6>
+                      </div>
+                      <div id="verifyBody" class="modal-body">
+                        <table class="table table-bordered">
+                          <thead id="verifyTable">
+                            <tr>
+                              <th>Destination Address</th>
+                              <th>Amount</th>
+                            </tr>
+                          </thead>
+                          <tr>
+                            <td><small><span class="label">A fee of 0.0005 BTC will be added.</span></small></td>
+                            <td><small><span><strong>0.0005</strong></span></small></td>
+                          </tr>
+                          <tfoot>
+                            <tr>
+                              <td><strong>Total</strong></td>
+                              <td><strong id="verifyTotal">50.05</strong>BTC</td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                        <p id="tx-toggle"><a data-toggle="collapse" data-target="#advanced-details">Show/Hide Transaction Details (Advanced users)</a></p>
+                        <div id="advanced-details" class="collapse">
+                          <div class="control-group">
+                            <label for="txJSON" class="control-label">JSON Transaction</label>
+                            <div class="controls">
+                              <textarea id="txJSON" rows="4" class="span5"></textarea>
+                            </div>
+                          </div>
+                          <div class="control-group">
+                            <label for="txHex" class="control-label">Raw Transaction</label>
+                            <div class="controls">
+                              <textarea id="txHex" rows="4" class="span5"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer"><a href="#" data-dismiss="modal" class="btn">Cancel</a>
+                        <button id="sendPayment" data-dismiss="modal" class="btn btn-primary">Send Payment</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="alertModal" class="modal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                        <h3>Response</h3>
+                      </div>
+                      <div class="modal-body">
+                        <p id="alertModalText"></p>
+                      </div>
+                      <div class="modal-footer"><a href="#" data-dismiss="modal" class="btn">Close</a></div>
+                    </div>
+                  </div>
+                </div>
+                <div id="linkModal" class="modal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                        <h3>Your Passphrase</h3>
+                      </div>
+                      <div class="modal-body">
+                        <p><span id="linkModalText" class="alert alert-info"></span></p>
+                        <p>To create an encrypted web link, enter a password below.</p>
+                        <div class="form-group">
+                          <input id="link-password" type="password" value="" class="form-control">
+                          <button id="gen-link" type="button" class="btn btn-success">Generate Link</button>
+                          <textarea id="link-text" class="form-control"></textarea>
+                        </div>
+                      </div>
+                      <div class="modal-footer"><a href="#" data-dismiss="modal" class="btn">Close</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- JavaScript created specifically for #{organization} #{product}-->
+    <script src="js/ext.min.js"></script>
+    <script src="js/app.min.js"></script>
+  </body>
+</html>
