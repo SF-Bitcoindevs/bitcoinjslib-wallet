@@ -393,7 +393,12 @@ $(document).ready(function() {
       var unspent = $('#txUnspent').val();
       var balance = parseFloat($('#txBalance').val());
 
-      var fee = parseFloat('0.0001');
+      var fee = parseFloat($('#txFee').val());
+      if (fee < 0.0001 || isNaN(fee)) fee = 0.0001;
+      $(".txFeeMsg").text(fee.toString());
+      $("#txFee").val(fee.toString());
+      TX.setFee(fee);
+
 
       try {
           var res = Bitcoin.base58check.decode(sec);

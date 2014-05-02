@@ -275,9 +275,9 @@
                           </div>
                           <div class="row">
                             <div class="col-xs-4">
-                              <label for="txFee">Fee (Includes Miners Fee)</label>
+                              <label for="txFee">Fee (minimum 0.0001)</label>
                               <div class="input-group">
-                                <input id="txFee" readonly="readonly" type="text" value="0.0001" class="form-control"><span class="input-group-addon">BTC</span>
+                                <input id="txFee" type="text" value="0.0001" class="form-control"><span class="input-group-addon">BTC</span>
                               </div>
                             </div>
                           </div><br>
@@ -309,8 +309,8 @@
                             </tr>
                           </thead>
                           <tr>
-                            <td><span>A fee of 0.0001 BTC will be added.</span></td>
-                            <td><span><strong>0.0001</strong> BTC</span></td>
+                            <td><span>A fee of <span class="txFeeMsg">0.0001</span> BTC will be added.</span></td>
+                            <td><span><strong><span class="txFeeMsg">0.0001<span></strong> BTC</span></td>
                           </tr>
                           <tfoot>
                             <tr>
