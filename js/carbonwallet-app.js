@@ -118,7 +118,17 @@ $(document).ready(function() {
   });
 
   function faucetWithdrawl() {
-    WALLET.faucetWithdrawl();
+    var faucetButton = $('#faucet')
+
+    if (faucetButton.attr('disabled')) return;
+
+    faucetButton.attr('disabled', 'disabled');
+    WALLET.faucetWithdrawl( function() {
+      if (WALLET.withdrawls)
+        faucetButton.removeAttr('disabled');
+      else
+        faucetButton.hide();
+    });
   }
 
   function showAddresses() {

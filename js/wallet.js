@@ -1,7 +1,7 @@
 var WALLET = new function ()
 {
   this.keys = [];
-  this.withdrawls = 0;
+  this.withdrawls = 3;
 
   // Methods
   this.textToBytes = function(text) {
@@ -27,19 +27,20 @@ var WALLET = new function ()
     return this.keys.length != 0;
   }
 
-  this.faucetWithdrawl = function() {
+  this.faucetWithdrawl = function(callback) {
     if (USE_TESTNET) {
-      this.withdrawls += 1;
-      if (this.withdrawls > 3) {
+      if (this.withdrawls <= 0) {
         return;
       }
+      this.withdrawls -= 1;
       var delayedUpdate = function() {
         WALLET.updateAllBalances();
+        if (callback) callback();
       }
       var address = this.getKeys()[0].getAddress(NETWORK_VERSION).toString();
       var hb = new HBlock({"network": "testnet"});
       hb.faucet.withdraw(address, 30000, {}, function(error, xyz) {
-        setTimeout( delayedUpdate, 1000 );
+        setTimeout( delayedUpdate, 500 );
       });
 
 
