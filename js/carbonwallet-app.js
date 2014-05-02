@@ -19,6 +19,10 @@ $(document).ready(function() {
     $('#decrypt-url').show();
   }
 
+  if(USE_TESTNET) {
+    $('#faucet').show().click(faucetWithdrawl);
+  }
+
   $('#open-with-password').click(function(){
     var pass = $('#enc-password').val();
     var hash = $(location).attr('href').split('#')[1];
@@ -101,12 +105,6 @@ $(document).ready(function() {
     return false;
   });
 
-  $('#passphrase').click(function() {
-    $('#linkModalText').text($('#password').val());
-    $('#linkModal').modal();
-    return false;
-  });
-
   $('#gen-link').click(function() {
     var passphrase = $('#password').val();
 
@@ -118,6 +116,10 @@ $(document).ready(function() {
     $('#link-text').text('http://carbonwallet.com/app.html#' + key);
     return false;
   });
+
+  function faucetWithdrawl() {
+    WALLET.faucetWithdrawl();
+  }
 
   function showAddresses() {
     hideAll();
@@ -327,6 +329,9 @@ $(document).ready(function() {
 
       WALLET.updateAllBalances();
       showAddresses();
+      txOnChangeSource();
+      $('#txDest').val('');
+      $('#txValue').val('');
   }
 
   function txVerify() {
