@@ -19,6 +19,10 @@ $(document).ready(function() {
     $('#decrypt-url').show();
   }
 
+  if(USE_TESTNET) {
+    $('#faucet').show().click(faucetWithdrawl);
+  }
+
   $('#open-with-password').click(function(){
     var pass = $('#enc-password').val();
     var hash = $(location).attr('href').split('#')[1];
@@ -101,12 +105,6 @@ $(document).ready(function() {
     return false;
   });
 
-  $('#passphrase').click(function() {
-    $('#linkModalText').text($('#password').val());
-    $('#linkModal').modal();
-    return false;
-  });
-
   $('#gen-link').click(function() {
     var passphrase = $('#password').val();
 
@@ -118,6 +116,20 @@ $(document).ready(function() {
     $('#link-text').text('http://carbonwallet.com/app.html#' + key);
     return false;
   });
+
+  function faucetWithdrawl() {
+    var faucetButton = $('#faucet')
+
+    if (faucetButton.attr('disabled')) return;
+
+    faucetButton.attr('disabled', 'disabled');
+    WALLET.faucetWithdrawl( function() {
+      if (WALLET.withdrawls)
+        faucetButton.removeAttr('disabled');
+      else
+        faucetButton.hide();
+    });
+  }
 
   function showAddresses() {
     hideAll();
@@ -327,6 +339,9 @@ $(document).ready(function() {
 
       WALLET.updateAllBalances();
       showAddresses();
+      txOnChangeSource();
+      $('#txDest').val('');
+      $('#txValue').val('');
   }
 
   function txVerify() {
@@ -378,7 +393,12 @@ $(document).ready(function() {
       var unspent = $('#txUnspent').val();
       var balance = parseFloat($('#txBalance').val());
 
-      var fee = parseFloat('0.0001');
+      var fee = parseFloat($('#txFee').val());
+      if (fee < 0.0001 || isNaN(fee)) fee = 0.0001;
+      $(".txFeeMsg").text(fee.toString());
+      $("#txFee").val(fee.toString());
+      TX.setFee(fee);
+
 
       try {
           var res = Bitcoin.base58check.decode(sec);

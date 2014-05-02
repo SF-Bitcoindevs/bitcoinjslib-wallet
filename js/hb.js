@@ -7632,7 +7632,8 @@ function run_xhr(options) {
     if(xhr.readyState === XHR.OPENED) {
       request.log.debug('Request started', {'id':xhr.id})
       for (var key in options.headers)
-        xhr.setRequestHeader(key, options.headers[key])
+        if(key != 'User-Agent')
+          xhr.setRequestHeader(key, options.headers[key])
     }
 
     else if(xhr.readyState === XHR.HEADERS_RECEIVED)

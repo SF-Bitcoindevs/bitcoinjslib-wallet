@@ -16,10 +16,15 @@ var TX = new function () {
     var outputs = [];
     var eckey = null;
     var balance = 0;
+    var fee = 0.0001;
 
     this.init = function(_eckey) {
         outputs = [];
         eckey = _eckey;
+    }
+
+    this.setFee = function(amount) {
+        fee = amount;
     }
 
     this.addOutput = function(addr, fval) {
@@ -43,7 +48,7 @@ var TX = new function () {
           var fval = outputs[i].value;
           value += fval;
       }
-      value += 0.0001;
+      value += fee;
       return value.toFixed(4);
     }
 
