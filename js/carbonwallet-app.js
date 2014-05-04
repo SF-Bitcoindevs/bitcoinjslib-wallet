@@ -176,14 +176,6 @@ $(document).ready(function() {
     WALLET.updateAllBalances();
     $("#txDropAddr").find("option").remove();
 
-    populate_addresses();
-
-    txOnChangeSource();
-
-    return false;
-  }
-
-  function populate_addresses(){
     for(i = 0; i < WALLET.getKeys().length; i++)
       {
         var addr = WALLET.getKeys()[i].getAddress(NETWORK_VERSION).toString();
@@ -192,6 +184,10 @@ $(document).ready(function() {
         var qrcode = makeQRCode(addr);
         $('#qrcode' + i).popover({ title: 'QRCode', html: true, content: qrcode, placement: 'bottom' });
       }
+
+    txOnChangeSource();
+
+    return false;
   }
 
   function makeQRCode(addr) {
