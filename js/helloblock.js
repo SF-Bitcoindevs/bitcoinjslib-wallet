@@ -55,4 +55,23 @@ var helloblock = new function () {
         }
       });
   }
+
+  this.faucetWithdrawl = function(toAddress, value, callback) {
+    var url = HELLOBLOCK_URL + '/v1/faucet/withdrawal'
+    var data = {
+      value: value,
+      toAddress: toAddress
+    }
+    $.ajax({
+      type: 'post',
+      url: url,
+      data: data,
+      success: function(res) {
+        if (callback) callback(res);
+      },
+      error: function(xhr, opt, err) {
+        alert("Faucet withdrawl failed! ", err )
+      }
+    });
+  }
 }
