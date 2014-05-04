@@ -37,6 +37,8 @@ This software is alpha software. Please make sure to run only on a clean web bro
 ## Contributing
 Feel free to send pull requests to have your project/startup listed here.
 
+## Special Thanks
+Special thanks to the [Carbon Wallet](http://carbonwallet.com/) team that inspired this project fork.
 
 ## License
 This web wallet is free and open-source software released under the MIT license.
