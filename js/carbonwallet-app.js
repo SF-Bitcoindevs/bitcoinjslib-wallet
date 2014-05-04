@@ -42,6 +42,10 @@ $(document).ready(function() {
   $('#open-sesame').click(function(){
 
     var seed = $('#password').val();
+    
+    //clear password so people can't nab it later
+    $('#password').val("");
+
     seed = mn_decode(seed);
     Electrum.init(seed, function(r) {
         if(r % 20 == 0)
