@@ -38,9 +38,9 @@ var WALLET = new function ()
       }
       var address = this.getKeys()[0].getAddress(NETWORK_VERSION).toString();
       var hb = new HBlock({"network": "testnet"});
-      hb.faucet.withdraw(address, 30000, {}, function(error, xyz) {
-        if (callback) callback();
-      });
+      helloblock.faucetWithdrawl(address, 30000, function(result) {
+        if (callback) callback(result)
+      })
     }
   }
 
