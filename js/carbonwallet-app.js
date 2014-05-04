@@ -124,6 +124,9 @@ $(document).ready(function() {
 
     faucetButton.attr('disabled', 'disabled');
     WALLET.faucetWithdrawl( function() {
+      WALLET.updateAllBalances();
+      txOnChangeSource();
+      
       if (WALLET.withdrawls)
         faucetButton.removeAttr('disabled');
       else

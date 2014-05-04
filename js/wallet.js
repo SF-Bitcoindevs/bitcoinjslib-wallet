@@ -34,16 +34,13 @@ var WALLET = new function ()
       }
       this.withdrawls -= 1;
       var delayedUpdate = function() {
-        WALLET.updateAllBalances();
         if (callback) callback();
       }
       var address = this.getKeys()[0].getAddress(NETWORK_VERSION).toString();
       var hb = new HBlock({"network": "testnet"});
       hb.faucet.withdraw(address, 30000, {}, function(error, xyz) {
-        setTimeout( delayedUpdate, 500 );
+        if (callback) callback();
       });
-
-
     }
   }
 
