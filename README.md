@@ -22,7 +22,6 @@ SF Bitcoindev build a determinist web wallet forked from Carbon Wallet. Anyone c
     `open SpecRunner.html`
 
 
-
 ## Security Warnings
 This software is alpha software. Please make sure to run only on a clean web browser.
 
@@ -32,7 +31,9 @@ This software is alpha software. Please make sure to run only on a clean web bro
 * [Larry Kang](https://github.com/lkang)
 * [Srinivasan Sriram](https://github.com/ssr1ram)
 * [Karl Keefer](https://github.com/karlkeefer)
+* [Vladimir Pekez](https://github.com/vladimirpekez/)
 * [Taariq Lewis](https://github.com/taariq)
+
 
 ## Contributing
 Feel free to send pull requests to have your project/startup listed here.
