@@ -31,6 +31,7 @@ This software is alpha software. Please make sure to run only on a clean web bro
 * [Sidney Zhang](https://github.com/sidazhang)
 * [Larry Kang](https://github.com/lkang)
 * [Srinivasan Sriram](https://github.com/ssr1ram)
+* [Karl Keefer](https://github.com/karlkeefer)
 * [Taariq Lewis](https://github.com/taariq)
 
 ## Contributing
