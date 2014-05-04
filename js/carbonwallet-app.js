@@ -42,6 +42,10 @@ $(document).ready(function() {
   $('#open-sesame').click(function(){
 
     var seed = $('#password').val();
+    
+    //clear password so people can't nab it later
+    $('#password').val("");
+
     seed = mn_decode(seed);
     Electrum.init(seed, function(r) {
         if(r % 20 == 0)
@@ -172,18 +176,22 @@ $(document).ready(function() {
     WALLET.updateAllBalances();
     $("#txDropAddr").find("option").remove();
 
-    for(i = 0; i < WALLET.getKeys().length; i++)
-    {
-      var addr = WALLET.getKeys()[i].getAddress(NETWORK_VERSION).toString();
-      $('#address' + i).text(addr);
-      $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>');
-      var qrcode = makeQRCode(addr);
-      $('#qrcode' + i).popover({ title: 'QRCode', html: true, content: qrcode, placement: 'bottom' });
-    }
+    populate_addresses();
 
     txOnChangeSource();
 
     return false;
+  }
+
+  function populate_addresses(){
+    for(i = 0; i < WALLET.getKeys().length; i++)
+      {
+        var addr = WALLET.getKeys()[i].getAddress(NETWORK_VERSION).toString();
+        $('#address' + i).text(addr);
+        $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>');
+        var qrcode = makeQRCode(addr);
+        $('#qrcode' + i).popover({ title: 'QRCode', html: true, content: qrcode, placement: 'bottom' });
+      }
   }
 
   function makeQRCode(addr) {

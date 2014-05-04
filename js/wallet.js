@@ -13,8 +13,8 @@ var WALLET = new function ()
   };
 
   this.getBalance = function() {
-    balance = 0
-        for(i = 0; i < 10; i++) {
+    balance = 0;
+    for(i = 0; i < this.getKeys().length; i++) {
       _b = parseFloat($('#balance' + i).text());
       if (!isNaN(_b)) {
         balance = balance + _b;
