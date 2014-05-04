@@ -177,13 +177,13 @@ $(document).ready(function() {
     $("#txDropAddr").find("option").remove();
 
     for(i = 0; i < WALLET.getKeys().length; i++)
-      {
-        var addr = WALLET.getKeys()[i].getAddress(NETWORK_VERSION).toString();
-        $('#address' + i).text(addr);
-        $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>');
-        var qrcode = makeQRCode(addr);
-        $('#qrcode' + i).popover({ title: 'QRCode', html: true, content: qrcode, placement: 'bottom' });
-      }
+    {
+      var addr = WALLET.getKeys()[i].getAddress(NETWORK_VERSION).toString();
+      $('#address' + i).text(addr);
+      $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>');
+      var qrcode = makeQRCode(addr);
+      $('#qrcode' + i).popover({ title: 'QRCode', html: true, content: qrcode, placement: 'bottom' });
+    }
 
     txOnChangeSource();
 
