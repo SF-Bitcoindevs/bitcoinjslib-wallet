@@ -8,7 +8,7 @@ SF Bitcoindev build a determinist web wallet forked from Carbon Wallet. Anyone c
 - Uses Bitcoinjs-lib v0.20
 - Testnet Switch with seeded bitcoin
 - Uses Helloblock.js for testnet faucet
-
+- A ChromeApp developer kit
 
 ## Usage
 1. $ open app.html
