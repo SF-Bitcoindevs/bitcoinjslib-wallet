@@ -99,6 +99,7 @@ $(document).ready(function() {
   });
 
   $('#logout').click(function(){
+    WALLET.keys = [];
     $('#password').val('');
     $('#site').hide();
     $('#create-keys').collapse('hide');
