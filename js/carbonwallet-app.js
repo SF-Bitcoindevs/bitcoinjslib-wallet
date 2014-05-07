@@ -212,6 +212,8 @@ $(document).ready(function() {
   }
 
   function makeAddressRow(i){
+    //this should use a template engine or something, but we don't have one. 
+    //We could also rework this to clone a sample TR if we want to keep the layout in app.html
     row = '<tr><td><code id="address'+i+'"></code></td> \
            <td><span><strong id="balance'+i+'"> </strong></span></td> \
            <td><i id="qrcode'+i+'" class="btn btn-default fa fa-qrcode"></i>';
