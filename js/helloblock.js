@@ -56,7 +56,7 @@ var helloblock = new function () {
       });
   }
 
-  this.faucetWithdrawl = function(toAddress, value, callback) {
+  this.faucetWithdrawal = function(toAddress, value, callback) {
     var url = HELLOBLOCK_URL + '/v1/faucet/withdrawal'
     var data = {
       value: value,
@@ -70,7 +70,7 @@ var helloblock = new function () {
         if (callback) callback(res);
       },
       error: function(xhr, opt, err) {
-        alert("Faucet withdrawl failed! ", err )
+        alert("Faucet withdrawal failed! ", err )
       }
     });
   }
