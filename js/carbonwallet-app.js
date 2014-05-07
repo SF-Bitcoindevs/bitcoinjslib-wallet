@@ -19,10 +19,6 @@ $(document).ready(function() {
     $('#decrypt-url').show();
   }
 
-  if(USE_TESTNET) {
-    $('#faucet').show().click(faucetWithdrawl);
-  }
-
   $('#open-with-password').click(function(){
     var pass = $('#enc-password').val();
     var hash = $(location).attr('href').split('#')[1];
@@ -46,15 +42,17 @@ $(document).ready(function() {
     //clear password so people can't nab it later
     $('#password').val("");
 
+    var numKeys = $('#numKeys').val();
+
     seed = mn_decode(seed);
     Electrum.init(seed, function(r) {
         if(r % 20 == 0)
           $('#seed-progress').css('width', (r + 19) + '%');
       },
       function(privKey) {
-        Electrum.gen(10, function(r) {
+        Electrum.gen(numKeys, function(r) {
           WALLET.getKeys().push(new Bitcoin.ECKey(r[1]));
-          if(WALLET.getKeys().length == 10)
+          if(WALLET.getKeys().length == numKeys)
             login_success();
         });
       }
@@ -79,7 +77,22 @@ $(document).ready(function() {
   $('#sendPayment').click(txSend);
   $('#generate-password').click(generatePassword);
   $('#regenerate-password').click(regeneratePassword);
-  $('#regenerate-password').tooltip();
+  $('#regenerate-password').tooltip({container: 'body'});
+
+  //advanced settings
+  if (qs('advanced')){
+    $('#advanced').addClass("in");
+  }
+
+  $('#numKeys').tooltip();
+
+  //network button group
+  if (USE_TESTNET){
+    $('#testnet').addClass("active");
+  }else{
+    $('#bitcoin').addClass("active");
+  }
+
 
   $('#your-addresses-nav, #home').click(showAddresses);
 
@@ -122,17 +135,18 @@ $(document).ready(function() {
     return false;
   });
 
-  function faucetWithdrawl() {
+  function faucetWithdrawal() {
+
     var faucetButton = $('#faucet')
 
     if (faucetButton.attr('disabled')) return;
 
     faucetButton.attr('disabled', 'disabled');
-    WALLET.faucetWithdrawl( function() {
+    WALLET.faucetWithdrawal( function() {
       WALLET.updateAllBalances();
       txOnChangeSource();
       
-      if (WALLET.withdrawls)
+      if (WALLET.withdrawals)
         faucetButton.removeAttr('disabled');
       else
         faucetButton.hide();
@@ -175,10 +189,14 @@ $(document).ready(function() {
     $('#logout-menu').show();
 
     WALLET.updateAllBalances();
+
     $("#txDropAddr").find("option").remove();
 
     for(i = 0; i < WALLET.getKeys().length; i++)
     {
+      
+      $(".public-addresses tbody").append(makeAddressRow(i));
+
       var addr = WALLET.getKeys()[i].getAddress(NETWORK_VERSION).toString();
       $('#address' + i).text(addr);
       $("#txDropAddr").append('<option value=' + i + '>' + addr + '</option>');
@@ -188,7 +206,22 @@ $(document).ready(function() {
 
     txOnChangeSource();
 
+    $('#faucet').click(faucetWithdrawal);
+
     return false;
+  }
+
+  function makeAddressRow(i){
+    //this should use a template engine or something, but we don't have one. 
+    //We could also rework this to clone a sample TR if we want to keep the layout in app.html
+    row = '<tr><td><code id="address'+i+'"></code></td> \
+           <td><span><strong id="balance'+i+'"> </strong></span></td> \
+           <td><i id="qrcode'+i+'" class="btn btn-default fa fa-qrcode"></i>';
+            if (i==0 && USE_TESTNET){//add faucet
+              row += ' <input type="button" id="faucet" class="btn btn-default" style="width: 94px;" value="add coins">';
+            }
+    row += '</td></tr>';
+    return row;
   }
 
   function makeQRCode(addr) {

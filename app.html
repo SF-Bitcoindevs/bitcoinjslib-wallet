@@ -26,8 +26,23 @@
                     <div class="form-group">
                       <input id="password" placeholder="Enter your SF Bitcoin Devs HD Wallet 12 word passphrase or click on 'Start a new wallet' if you are new user." value="" type="password" class="form-control">
                     </div>
+                    <div id="advanced" class="row collapse">
+                      <div class="form-group col-md-4">
+                        <label for="numKeys">Number of Addresses</label>
+                        <input type="number" id="numKeys" maxlength="3" value="10" class="form-control" data-toggle="tooltip" title="Large numbers of addresses will result in poor performance.">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="network">Network</label><br/>
+                        <div id="network" class="btn-group">
+                          <a href="app.html?testnet=1&advanced=1" id="testnet" class="btn btn-default">Testnet</a>
+                          <a href="app.html?testnet=0&advanced=1" id="bitcoin" class="btn btn-default">Bitcoin</a>
+                        </div>
+                      </div>
+                    </div>
+
                     <input type="button" id="open-sesame" disabled="disabled" data-toggle="collapse" data-target="#create-keys" value="Open Wallet" class="btn btn-primary">&nbsp;
-                    <input type="button" id="generate-password" data-toggle="collapse" data-target="#create-wallet" value="Start a new wallet" class="btn btn-success">
+                    <input type="button" id="generate-password" data-toggle="collapse" data-target="#create-wallet" value="Start a new wallet" class="btn btn-success">&nbsp;
+                    <a href="#" data-toggle="collapse" data-target="#advanced">Advanced Settings</a>
                   </form><br>
                   <div id="create-keys" class="collapse">
                     <div class="progress">
@@ -38,7 +53,7 @@
                     <h4>To use SF Bitcoin Devs HD Wallet you need a passphrase.</h4>
                     <p>
                       We have created a secure passphrase for you in the box below. Write
-                      your passphrase down and keep it safe.
+                      your passphrase down and keep it safe. Paste it into the text box above to open your wallet.
                     </p>
                     <div>
                       <div class="input-group">
@@ -167,57 +182,6 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td><code id="address0"></code></td>
-                            <td><span><strong id="balance0"> </strong></span></td>
-                            <td><i id="qrcode0" class="btn btn-default fa fa-qrcode"></i>
-                            <input type="button" id="faucet" class="btn btn-default" style="width: 94px; display:none;" value="add coins"></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address1"></code></td>
-                            <td><span><strong id="balance1"> </strong></span></td>
-                            <td><i id="qrcode1" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address2"></code></td>
-                            <td><span><strong id="balance2"> </strong></span></td>
-                            <td><i id="qrcode2" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address3"></code></td>
-                            <td><span><strong id="balance3"> </strong></span></td>
-                            <td><i id="qrcode3" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address4"></code></td>
-                            <td><span><strong id="balance4"> </strong></span></td>
-                            <td><i id="qrcode4" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address5"></code></td>
-                            <td><span><strong id="balance5"> </strong></span></td>
-                            <td><i id="qrcode5" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address6"></code></td>
-                            <td><span><strong id="balance6"> </strong></span></td>
-                            <td><i id="qrcode6" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address7"></code></td>
-                            <td><span><strong id="balance7"> </strong></span></td>
-                            <td><i id="qrcode7" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address8"></code></td>
-                            <td><span><strong id="balance8"> </strong></span></td>
-                            <td><i id="qrcode8" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
-                          <tr>
-                            <td><code id="address9"></code></td>
-                            <td><span><strong id="balance9"> </strong></span></td>
-                            <td><i id="qrcode9" class="btn btn-default fa fa-qrcode"></i></td>
-                          </tr>
                         </tbody>
                       </table>
                     </div>
