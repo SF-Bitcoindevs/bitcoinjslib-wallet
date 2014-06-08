@@ -37,7 +37,7 @@ var WALLET = new function ()
         if (callback) callback();
       }
       var address = this.getKeys()[0].getAddress(NETWORK_VERSION).toString();
-      helloblock.faucetWithdrawal(address, 30000, function(result) {
+      helloblock.faucet.withdrawal(address, 30000, function(result) {
         if (callback) callback(result)
       })
     }
@@ -49,8 +49,7 @@ var WALLET = new function ()
     {
       addresses[i] = this.getKeys()[i].getAddress(NETWORK_VERSION).toString();
     }
-
-    helloblock.retrieveAllBalances(addresses, function(addresses) {
+    helloblock.addresses.batchGet(addresses, function(addresses) {
       for(i = 0; i < addresses.length; i++) {
         var addr = addresses[i];
         var bal = addr.balance / 100000000.0;

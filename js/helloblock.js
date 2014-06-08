@@ -1,77 +1,20 @@
-// Here we hold all the interactions with the blockchain.
-var helloblock = new function () {
+var Transaction = require('./resources/transactions');
+var Address = require('./resources/addresses');
+var Block = require('./resources/blocks');
+var Faucet = require('./resources/faucet');
+var Wallet = require('./resources/wallet');
 
-  this.retrieveAllBalances = function(addresses, callback) {
-    var url = HELLOBLOCK_URL + '/v1/addresses?';
+function createClient(options) {
+  var client = {};
+  client.options = options;
 
-    var addrs = []
-    for(i = 0; i < addresses.length; i++) {
-			addrs.push('addresses=' + addresses[i])
-		}
-    url = url + addrs.join('&')
+  client.transactions = new Transaction(options)
+  client.addresses = new Address(options)
+  client.blocks = new Block(options)
+  client.faucet = new Faucet(options)
+  client.wallet = new Wallet(options)
 
-    $.ajax({
-          url: url,
-          success: function(res) {
-              callback(res.data.addresses)
-          },
-          error:function (xhr, opt, err) {
-              if (onError)
-                  onError(err);
-          }}
-          )
-  }
-
-  this.getUnspentOutputs = function(address, callback) {
-      var url = HELLOBLOCK_URL + '/v1/addresses/' + address + '/unspents?limit=10';
-      $.ajax({
-        url: url,
-        success: function(res) {
-            callback(res.data.unspents);
-        },
-        error:function (xhr, opt, err) {
-            if (onError)
-                onError(err);
-        }}
-      )
-  }
-
-  this.sendTX = function(tx, callback) {
-      var url = HELLOBLOCK_URL + '/v1/transactions'
-      $.ajax({
-        type: 'post',
-        url: url,
-        data: {rawTxHex: tx},
-        success: function(res) {
-          var msg = 'Transaction complete!\n';
-          console.log( msg, res );
-          if (callback) {
-            var detail =  'txHash: ' + res.data.transaction.txHash;
-            callback( msg + detail );
-          }
-        }, 
-        error: function(xhr, opt, err) {
-          alert("Failed! ", err )
-        }
-      });
-  }
-
-  this.faucetWithdrawal = function(toAddress, value, callback) {
-    var url = HELLOBLOCK_URL + '/v1/faucet/withdrawal'
-    var data = {
-      value: value,
-      toAddress: toAddress
-    }
-    $.ajax({
-      type: 'post',
-      url: url,
-      data: data,
-      success: function(res) {
-        if (callback) callback(res);
-      },
-      error: function(xhr, opt, err) {
-        alert("Faucet withdrawal failed! ", err )
-      }
-    });
-  }
+  return client;
 }
+
+module.exports = createClient;

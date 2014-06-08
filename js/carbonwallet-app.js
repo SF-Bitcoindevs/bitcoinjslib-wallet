@@ -318,7 +318,7 @@ $(document).ready(function() {
       var addr = WALLET.getKeys()[$('#txDropAddr').val()].getAddress(NETWORK_VERSION).toString();
 
       $('#txUnspent').val('');
-      helloblock.getUnspentOutputs(addr, txSetUnspent);
+      helloblock.address.getUnspents(addr, txSetUnspent);
   }
 
   function txOnChangeDest() {
@@ -423,7 +423,7 @@ $(document).ready(function() {
 
       var tx = $('#txHex').val();
 
-      helloblock.sendTX(tx, txSent);
+      helloblock.transaction.propagate(tx, txSent);
       return true;
   }
 
